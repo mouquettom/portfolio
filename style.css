@@ -1,0 +1,1355 @@
+/* =========================================
+   VARIABLES
+   ========================================= */
+
+:root {
+
+    --background-main: #f1f1f1;
+    --background-section: #ededed;
+
+    --text-main: #333333;
+    --text-secondary: #606060;
+
+    --accent: #008494;
+
+    /* Réglages About : espace inférieur et largeur du texte sur grand écran. */
+    --about-bottom-space: 48px;
+    --about-text-width: 75%;
+    --about-text-max-width: 996px;
+
+
+    /* =========================================
+       ILLUSTRATIONS RESPONSIVES
+       ========================================= */
+
+    /* Taille progressive sur desktop :
+       ~320px très large
+       ~270px vers 1920px
+       ~210px vers 1500px
+    */
+    --side-illustration-size: clamp(180px, 12vw, 300px);
+    --side-illustration-edge: clamp(20px, 4.8vw, 120px);
+
+    /* Distance de sécurité avec le contenu */
+    --side-illustration-gap: 36px;
+
+    --astronaut-top: 380px;
+    --rocket-top: 530px;
+
+
+    /*
+        Expériences
+    */
+
+    --journey-height: 880px;
+    --journey-entry-offset: 74px;
+}
+
+
+
+/* =========================================
+   RESET
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+html,
+body {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+
+    background: var(--background-main);
+}
+
+
+
+body {
+    font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+    background-color: var(--background-main);
+
+    color: var(--text-main);
+}
+
+
+
+section {
+    scroll-margin-top: 100px;
+}
+
+
+
+/* =========================================
+   TYPOGRAPHIE
+   ========================================= */
+
+h1 {
+    font-size: 3.2em;
+
+    letter-spacing: 5px;
+
+    font-family:
+        'Poppins',
+        'Helvetica Neue',
+        sans-serif;
+
+    font-weight: 500;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    line-height: 1.2;
+
+    color: var(--text-main);
+
+    text-align: center;
+}
+
+
+
+h2 {
+    font-family:
+        'Poppins',
+        'Helvetica Neue',
+        sans-serif;
+
+    font-size: 2.5em;
+
+    text-align: center;
+
+    margin: 80px 0;
+
+    font-weight: 600;
+
+    letter-spacing: 12px;
+}
+
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+header {
+    background-color: #333;
+
+    padding: 8px 40px;
+
+    position: fixed;
+
+    width: 100%;
+
+    top: 0;
+    left: 0;
+
+    z-index: 100;
+}
+
+
+
+.nav-bar {
+    width: 75%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+
+/* Logo */
+
+.logo-circle {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background-color: var(--background-main);
+
+    overflow: hidden;
+}
+
+
+
+.logo-circle a {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+
+
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+
+/* Navigation */
+
+.nav-menu {
+    list-style: none;
+
+    display: flex;
+
+    gap: 55px;
+}
+
+
+
+.nav-menu a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1.10em;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+
+.nav-menu a:hover {
+    opacity: 0.55;
+}
+
+
+
+/* Réseaux */
+
+.nav-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+
+.social-icon {
+    width: 22px;
+    height: 22px;
+
+    object-fit: contain;
+
+    filter: brightness(0) invert(1);
+
+    transition: opacity 0.25s ease;
+}
+
+
+
+.social-icon:hover {
+    opacity: 0.5;
+}
+
+
+
+/* =========================================
+   HOME
+   ========================================= */
+
+.accueil {
+    width: 100%;
+
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+
+#particles-canvas {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+
+    pointer-events: auto;
+}
+
+
+
+.accueil h1,
+.accueil p {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+
+.line-1,
+.line-2,
+.line-3 {
+    display: block;
+
+    opacity: 0;
+
+    transform: translateY(-120px);
+
+    animation:
+        apparition 0.5s ease-out forwards;
+}
+
+
+
+.line-1 {
+    animation-delay: 0s;
+}
+
+
+
+.line-2 {
+    padding-left: 25px;
+
+    animation-delay: 0.3s;
+}
+
+
+
+.line-3 {
+    padding-left: 25px;
+
+    animation-delay: 0.6s;
+}
+
+
+
+.hero-description {
+
+    padding-top: 22px;
+
+    font-size: 1.10em;
+
+    letter-spacing: 0.25px;
+
+    color: var(--text-secondary);
+
+    opacity: 0;
+
+    transform: translateY(-30px);
+
+    animation:
+        apparition 0.6s ease-out 1.2s forwards;
+}
+
+
+
+@keyframes apparition {
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+
+/* =========================================
+   ABOUT
+   ========================================= */
+
+.section-about {
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    background-color: var(--background-section);
+
+    z-index: 5;
+
+    height: auto;
+
+    max-height: none;
+
+    min-height: 0;
+
+    padding-bottom: var(--about-bottom-space);
+}
+
+
+
+/*
+    Contenu texte About
+
+    Largeur réglable dans :root via --about-text-width
+    et --about-text-max-width. Les règles mobiles restent en bas du fichier.
+*/
+
+.txt-about {
+    width: var(--about-text-width);
+
+    max-width: var(--about-text-max-width);
+
+    margin: 0 auto;
+
+    letter-spacing: 0.6px;
+
+    line-height: 1.7;
+
+    font-size: 1.05rem;
+
+    text-align: justify;
+    text-align-last: left;
+}
+
+
+
+/* =========================================
+   ASTRONAUT
+   ========================================= */
+
+#astronaut {
+    position: absolute;
+
+    width: var(--side-illustration-size);
+    height: var(--side-illustration-size);
+
+    left: var(--side-illustration-edge);
+
+    top: var(--astronaut-top);
+
+    z-index: 6;
+    pointer-events: none;
+}
+
+
+/*
+    Tout déplacement de l'astronaute
+    se fait uniquement ici :
+
+    --astronaut-left
+    --astronaut-top
+    --astronaut-size
+
+    Le texte et la constellation
+    ne bougeront pas.
+*/
+
+
+/* =========================================
+   SKILLS LOTTIE
+   ========================================= */
+
+
+.skills-animations {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: center;
+    gap: clamp(100px, 3vw, 40px);
+
+    width: min(1000px, 94%);
+    margin: 100px auto 0;
+    margin-bottom: 50px;
+}
+
+.skills-animations > div {
+    min-width: 0;
+    width: 100%;
+}
+
+#skills-01 {
+    aspect-ratio: 600 / 341;
+}
+
+#skills-02 {
+    aspect-ratio: 400 / 309;
+}
+
+.skills-animations svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   PROJECTS
+   ========================================= */
+
+.portfolio {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    position: relative;
+
+    padding-bottom: 100px;
+
+    background-color: var(--background-main);
+
+    z-index: 5;
+}
+
+
+
+.container-portfolio {
+    width: 75%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 40px;
+}
+
+
+
+.item {
+    width: 100%;
+
+    min-height: 340px;
+
+    background: #f0f2f0;
+
+    color: var(--text-main);
+
+    border-radius: 30px;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.18);
+}
+
+
+
+.item:hover {
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.18);
+}
+
+
+
+.container-image-porftolio {
+    width: 100%;
+
+    height: 180px;
+
+    overflow: hidden;
+}
+
+
+
+.container-image-porftolio img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+
+.item h3 {
+    padding: 20px 18px 0;
+
+    letter-spacing: 0.25px;
+
+    font-size: 20px;
+}
+
+
+
+.item p {
+    padding:
+        14px 18px 0;
+
+    font-size: 14px;
+
+    letter-spacing: 0.25px;
+
+    line-height: 1.5;
+}
+
+
+
+.item .project-stack {
+    padding-top: 16px;
+
+    font-size: 11px;
+
+    color: #888;
+}
+
+
+
+/* =========================================
+   EXPERIENCES
+   ========================================= */
+
+.experiences {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    position: relative;
+
+    padding-bottom: 80px;
+
+    background-color: var(--background-section);
+
+    z-index: 5;
+}
+
+
+/* Timeline */
+
+/* =========================================
+   JOURNEY - TIMELINE
+   ========================================= */
+
+.cont-exp-travail {
+    width: min(980px, 75%);
+
+    margin: 0 auto;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    column-gap: 64px;
+
+    align-items: stretch;
+}
+
+
+/* ------------ Ligne verticale ------------ */
+
+.barre-verticale {
+    width: 58px;
+    height: var(--journey-height);
+
+    position: relative;
+
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+
+    align-items: center;
+    justify-items: center;
+
+    background: transparent;
+
+    flex-shrink: 0;
+}
+
+.barre-verticale::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 10%;
+    bottom: 10%;
+
+    width: 2px;
+
+    background: #333;
+
+    transform: translateX(-50%);
+
+    z-index: 0;
+}
+
+
+/* ------------ Points / logos ------------ */
+
+.boule-ico {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50%;
+
+    border: 1px solid #333;
+
+    background: var(--background-section);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.boule-ico:hover {
+    transform: scale(1.15);
+    border-color: var(--accent);
+}
+
+
+.boule-ico img {
+    width: 45px;
+    height: 45px;
+
+    object-fit: contain;
+}
+
+.plane {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #333;
+    background: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plane img {
+    width: 48px;
+}
+
+.boule-ico,
+.plane {
+    position: relative;
+
+    z-index: 1;
+
+    align-self: center;
+    justify-self: center;
+}
+
+
+/* ------------ Colonne de contenu ------------ */
+
+.flex-cont-bloc-exp {
+    width: 100%;
+    height: var(--journey-height);
+
+    padding: 0;
+
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+
+    align-items: center;
+}
+
+
+/* ------------ Une étape ------------ */
+
+.bloc {
+    width: 100%;
+    height: auto;
+
+    margin: 0;
+
+    align-self: start;
+
+    transform: translateY(var(--journey-entry-offset));
+}
+
+
+/* ------------ Ligne organisme + date ------------ */
+
+.titre-travail-exp {
+    margin-bottom: 40px;
+}
+
+.titre-section-bloc {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        'Montserrat',
+        'Helvetica Neue',
+        Arial,
+        sans-serif;
+
+    line-height: 1.2;
+
+    letter-spacing: 0;
+}
+
+
+/* Organisme */
+
+.journey-name {
+    font-size: 1.4rem;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    color: var(--text-main);
+}
+
+
+/* Séparateur | */
+
+.journey-separator {
+    margin: 0 18px;
+
+    font-size: 1.15rem;
+
+    font-weight: 400;
+
+    color: #777;
+}
+
+
+/* Date */
+
+.journey-date {
+    font-size: 1rem;
+
+    font-weight: 500;
+
+    letter-spacing: 1.2px;
+
+    color: var(--accent);
+
+    white-space: nowrap;
+}
+
+
+/* ------------ Fonction / diplôme ------------ */
+
+.journey-role {
+    margin-top: 10px;
+
+    font-family:
+        'Montserrat',
+        'Helvetica Neue',
+        Arial,
+        sans-serif;
+
+    font-size: 1.12rem;
+
+    letter-spacing: 0.5px;
+
+    font-weight: 500;
+
+    opacity: 90%;
+
+    line-height: 1.4;
+
+    color: var(--text-main);
+}
+
+
+/* ------------ Description ------------ */
+
+.txt-section {
+    width: 95%;
+    max-width: none;
+
+    margin-top: 12px;
+
+    font-family:
+        'Montserrat',
+        'Helvetica Neue',
+        Arial,
+        sans-serif;
+
+    font-size: 1rem;
+    font-weight: 400;
+
+    line-height: 1.55;
+    letter-spacing: 0.25px;
+
+    color: var(--text-secondary);
+
+    text-align: justify;
+    text-align-last: left;
+
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+
+
+/* =========================================
+   ROCKET
+   ========================================= */
+
+#rocket {
+    position: absolute;
+
+    width: var(--side-illustration-size);
+    height: var(--side-illustration-size);
+
+    right: var(--side-illustration-edge);
+
+    top: var(--rocket-top);
+
+    z-index: 6;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   CONTACT
+   ========================================= */
+
+.contact {
+    width: 100%;
+
+    margin: auto;
+}
+
+
+
+.container-form {
+    width: 75%;
+
+    max-width: 1000px;
+
+    margin: auto;
+}
+
+
+
+.form-groupe {
+    position: relative;
+
+    display: flex;
+
+    margin-bottom: 45px;
+}
+
+
+
+.form-groupe label {
+    position: absolute;
+
+    padding: 10px 0;
+
+    opacity: 0.5;
+
+    font-size: 1rem;
+
+    letter-spacing: 1px;
+}
+
+
+
+.form-groupe input {
+    display: block;
+
+    width: 100%;
+
+    padding: 10px 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    border-bottom:
+        1px solid #aaa;
+
+    color: #666;
+
+    font-size: 1rem;
+}
+
+
+
+textarea {
+    width: 100%;
+
+    height: 200px;
+
+    border:
+        1px solid #aaa;
+
+    border-radius: 4px;
+
+    padding: 15px;
+
+    resize: none;
+
+    outline: none;
+
+    font-size: 1rem;
+
+    background-color:
+        var(--background-main);
+}
+
+
+
+textarea::placeholder {
+    opacity: 0.5;
+
+    letter-spacing: 1px;
+}
+
+
+
+button {
+    margin: auto;
+
+    padding: 10px 35px;
+
+    font-size: 1rem;
+
+    letter-spacing: 1px;
+
+    background: transparent;
+
+    border: 1px solid #555;
+
+    cursor: pointer;
+
+    border-radius: 15px;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease;
+}
+
+
+
+button:hover {
+    background: #333;
+
+    color: white;
+}
+
+
+
+.form-groupe:focus-within label,
+.form-groupe.animation label {
+    display: none;
+}
+
+
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+footer {
+    width: 100%;
+
+    text-align: center;
+
+    padding:
+        50px 0 20px;
+
+    opacity: 0.55;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+
+
+/* =========================================
+   <= 1440px
+   Illustrations sous les titres,
+   skills empilées et projets en 2 colonnes
+   ========================================= */
+
+@media screen and (max-width: 1700px) {
+
+    #astronaut,
+    #rocket {
+        position: relative;
+
+        left: auto;
+        right: auto;
+        top: auto;
+
+        width: clamp(200px, 10vw, 240px);
+        height: clamp(200px, 10vw, 240px);
+    }
+
+
+    /* Astronaute juste sous ABOUT */
+
+    #astronaut {
+        margin:
+            -40px auto 35px;
+    }
+
+
+    /* Fusée juste sous JOURNEY */
+
+    #rocket {
+        margin:
+            -40px auto 30px;
+    }
+}
+
+
+@media screen and (max-width: 1280px) {
+
+
+    /* HOME */
+    .accueil {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .accueil h1 {
+        width: 100%;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 100px;
+
+        font-size: clamp(2.4rem, 12vw, 3.6rem);
+        line-height: 1.75;
+    }
+
+    .line-1,
+    .line-2,
+    .line-3 {
+        width: 100%;
+
+        padding-left: 0;
+
+        transform: translateY(-75px);
+
+        text-align: center;
+    }
+
+    .hero-description {
+        width: min(680px, 100%);
+        margin-inline: auto;
+        padding-top: 50px;
+        line-height: 1.75;
+        font-size: 1rem;
+    }
+
+
+    /* Marges de sécurité */
+    .accueil,
+    .section-about,
+    .portfolio,
+    .experiences,
+    .contact {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+
+    /* HEADER */
+    .nav-bar {
+        width: 90%;
+    }
+
+    .nav-menu {
+        gap: 35px;
+    }
+
+    .txt-about {
+        width: min(900px, 90%);
+    }
+
+
+    /* PROJECTS : 2 colonnes × 3 lignes */
+    .container-portfolio {
+        width: min(900px, 90%);
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 38px;
+    }
+
+    .cont-exp-travail {
+        width: min(980px, 90%);
+    }
+
+
+    /* CONTACT */
+    .container-form {
+        width: min(900px, 90%);
+    }
+}
+
+
+/* =========================================
+   <= 980px
+   Hero vertical + projets en 1 colonne
+   ========================================= */
+
+@media screen and (max-width: 980px) {
+
+
+    /* HEADER */
+    .nav-bar {
+        width: 100%;
+    }
+
+    .nav-menu {
+        gap: 20px;
+    }
+
+    .txt-about {
+        width: min(760px, 90%);
+    }
+
+    /* Skills verticales, centrées.
+       skills-02 conserve 2/3 de la largeur de skills-01. */
+    .skills-animations {
+        width: min(560px, 88%);
+
+        margin: 60px auto 35px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 60px;
+    }
+
+    #skills-01 {
+        width: 100%;
+    }
+
+    #skills-02 {
+        width: 66.6667%;
+    }
+
+
+    /* PROJECTS : 1 colonne × 6 lignes */
+    .container-portfolio {
+        width: min(420px, calc(100% - 40px));
+        max-width: 420px;
+
+        grid-template-columns: 1fr;
+
+        gap: 32px;
+    }
+
+    .cont-exp-travail {
+        width: min(820px, 94%);
+    }
+
+
+    /* CONTACT */
+    .container-form {
+        width: min(760px, calc(100% - 40px));
+    }
+}
+
+
+/* =========================================
+   <= 700px
+   Garde-fous mobile - affinage à venir
+   ========================================= */
+
+@media screen and (max-width: 700px) {
+
+    h2 {
+        font-size: 30px;
+        letter-spacing: 6px;
+        margin: 55px 0;
+    }
+
+
+    .accueil,
+    .section-about,
+    .portfolio,
+    .experiences,
+    .contact {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    .txt-about {
+        width: 95%;
+        font-size: 0.95rem;
+        text-align: justify;
+        text-align-last: left;
+    }
+
+    .skills-animations {
+        width: min(500px, 96%);
+        margin-top: 45px;
+        gap: 24px;
+    }
+
+    .container-portfolio {
+        width: min(400px, 100%);
+    }
+
+
+    .container-form {
+        width: 100%;
+    }
+}

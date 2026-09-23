@@ -1,0 +1,15 @@
+.git
+.github
+.idea
+.vscode
+
+.venv
+venv
+__pycache__
+.pytest_cache
+
+tests
+server.py
+
+.DS_Store
+*.log
