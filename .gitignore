@@ -26,3 +26,6 @@ test-results/
 # Environment variables
 .env
 .env.*
+
+# Dossier généré, pas du code source
+public/
