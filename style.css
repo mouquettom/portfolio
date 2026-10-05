@@ -62,9 +62,15 @@
 html,
 body {
     scroll-behavior: smooth;
-    overflow-x: hidden;
 
     background: var(--background-main);
+
+    min-width: 600px;
+}
+
+
+html {
+    overflow-x: auto;
 }
 
 
@@ -75,6 +81,8 @@ body {
     background-color: var(--background-main);
 
     color: var(--text-main);
+
+    overflow-x: visible;
 }
 
 
@@ -156,16 +164,20 @@ header {
 
 
 .nav-bar {
-    width: 75%;
-    max-width: 1400px;
+    /* 75% sur grand écran, puis progressivement jusqu'à 100% */
+    width: clamp(75%, calc(50% + 460px), 100%);
 
-    margin: 0 auto;
+    max-width: none;
+
+    margin:0 auto;
+
+    /* Conserve la hauteur quand la signature disparaît */
+    min-height: 70px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
+    gap: clamp(12px, 2vw, 32px);
 }
 
 
@@ -173,8 +185,8 @@ header {
 /* Logo */
 
 .logo-circle {
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
 
     border-radius: 50%;
 
@@ -207,10 +219,10 @@ header {
 
 .nav-menu {
     list-style: none;
-
     display: flex;
 
-    gap: 55px;
+    /* Espacement progressif entre les rubriques */
+    gap: clamp(12px, 3vw, 55px);
 }
 
 
@@ -242,14 +254,14 @@ header {
 
     align-items: center;
 
-    gap: 18px;
+    gap: 22px;
 }
 
 
 
 .social-icon {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
 
     object-fit: contain;
 
@@ -579,6 +591,13 @@ header {
 }
 
 
+.project-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
 
 .container-image-porftolio {
     width: 100%;
@@ -662,7 +681,7 @@ header {
    ========================================= */
 
 .cont-exp-travail {
-    width: min(980px, 75%);
+    width: min(1050px, 75%);
 
     margin: 0 auto;
 
@@ -670,7 +689,7 @@ header {
 
     display: grid;
     grid-template-columns: 58px minmax(0, 1fr);
-    column-gap: 64px;
+    column-gap: clamp(12px, 5vw, 64px);
 
     align-items: stretch;
 }
@@ -1147,7 +1166,7 @@ footer {
 
     #rocket {
         margin:
-            -40px auto 30px;
+            -60px auto 30px;
     }
 }
 
@@ -1205,15 +1224,6 @@ footer {
     }
 
 
-    /* HEADER */
-    .nav-bar {
-        width: 90%;
-    }
-
-    .nav-menu {
-        gap: 35px;
-    }
-
     .txt-about {
         width: min(900px, 90%);
     }
@@ -1247,16 +1257,6 @@ footer {
    ========================================= */
 
 @media screen and (max-width: 980px) {
-
-
-    /* HEADER */
-    .nav-bar {
-        width: 100%;
-    }
-
-    .nav-menu {
-        gap: 20px;
-    }
 
     .txt-about {
         width: min(760px, 90%);
@@ -1312,7 +1312,7 @@ footer {
    Garde-fous mobile - affinage à venir
    ========================================= */
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 780px) {
 
     h2 {
         font-size: 30px;
@@ -1320,6 +1320,22 @@ footer {
         margin: 55px 0;
     }
 
+    .nav-left {
+        display: none;
+    }
+
+    .nav-menu a {
+        font-size: 1em;
+    }
+
+    .nav-right {
+        gap: 15px;
+    }
+
+    .social-icon {
+        width: 20px;
+        height: 20px;
+    }
 
     .accueil,
     .section-about,
