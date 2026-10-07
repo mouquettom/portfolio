@@ -331,7 +331,7 @@ function updateDesktopZoom() {
         return;
     }
 
-    // Dézoom progressif entre 2300px et 1920px
+    // Dézoom progressif entre 2580px et 1700px
     const progress = (width - minWidth) / (maxWidth - minWidth);
 
     const zoom =
