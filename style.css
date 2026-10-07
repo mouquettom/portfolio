@@ -22,17 +22,16 @@
        ILLUSTRATIONS RESPONSIVES
     ========================================== */
 
-    --side-illustration-size: clamp(260px, 16vw, 300px);
+    --side-illustration-size: 300px;
 
     /* Plus proche des bords */
-    --side-illustration-edge: clamp(20px, 4.8vw, 120px);
+    --side-illustration-edge: clamp(10px, 2.5vw, 120px);
 
     /* Distance de sécurité avec le contenu */
     --side-illustration-gap: 36px;
 
     --astronaut-top: 380px;
     --rocket-top: 530px;
-
 
     /*
         Expériences
@@ -171,7 +170,7 @@ header {
     margin:0 auto;
 
     /* Conserve la hauteur quand la signature disparaît */
-    min-height: 70px;
+    min-height: 60px;
 
     display: flex;
     align-items: center;
@@ -184,8 +183,8 @@ header {
 /* Logo */
 
 .logo-circle {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
 
     border-radius: 50%;
 
@@ -1136,7 +1135,7 @@ footer {
    skills empilées et projets en 2 colonnes
    ========================================= */
 
-@media screen and (max-width: 1580px) {
+@media screen and (max-width: 1700px) {
 
     #astronaut,
     #rocket {
@@ -1146,8 +1145,8 @@ footer {
         right: auto;
         top: auto;
 
-        width: clamp(300px, 10vw, 350px);
-        height: clamp(300px, 10vw, 350px);
+        width: var(--side-illustration-size);
+        height: var(--side-illustration-size);
     }
 
     .cont-exp-travail {
@@ -1244,21 +1243,6 @@ footer {
     .container-form {
         width: min(900px, 90%);
     }
-
-    /* Astronaute juste sous ABOUT */
-
-    #astronaut {
-        margin:
-            -40px auto 50px;
-    }
-
-
-    /* Fusée juste sous JOURNEY */
-
-    #rocket {
-        margin:
-            0 auto 25px;
-    }
 }
 
 
@@ -1270,7 +1254,7 @@ footer {
 @media screen and (max-width: 980px) {
 
     .txt-about {
-        width: min(760px, 90%);
+        width: min(850px, 90%);
     }
 
     /* Skills verticales, centrées.
