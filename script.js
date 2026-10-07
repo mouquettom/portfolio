@@ -310,7 +310,7 @@ function updateDesktopZoom() {
     const minWidth = 1481;
     const maxWidth = 2580;
 
-    const minZoom = 0.82;
+    const minZoom = 0.80;
     const maxZoom = 1;
 
     // MOBILE : on remonte volontairement l'échelle à 1
