@@ -135,22 +135,6 @@ document.addEventListener("visibilitychange", () => {
 
 
 // -------------------------
-// FORMULAIRE
-// -------------------------
-
-const inputFields = document.querySelectorAll("input");
-
-inputFields.forEach((field) => {
-    field.addEventListener("input", (event) => {
-        event.target.parentNode.classList.toggle(
-            "animation",
-            event.target.value !== ""
-        );
-    });
-});
-
-
-// -------------------------
 // LOTTIE
 // -------------------------
 
@@ -311,6 +295,10 @@ document.addEventListener("visibilitychange", () => {
 });
 
 
+/* =========================================
+   DE-ZOOM — RESPONSIVE
+   ========================================= */
+
 function updateDesktopZoom() {
     const width = window.innerWidth;
     const scaledContent = document.querySelector(".desktop-scaled-content");
@@ -319,19 +307,19 @@ function updateDesktopZoom() {
 
     const mobileBreakpoint = 768;
 
-    const minWidth = 1900;
+    const minWidth = 1920;
     const maxWidth = 2300;
 
     const minZoom = 0.85;
     const maxZoom = 1;
 
-    // MOBILE : on remonte volontairement l'échelle à 0.90
+    // MOBILE : on remonte volontairement l'échelle à 1
     if (width <= mobileBreakpoint) {
         scaledContent.style.zoom = "1";
         return;
     }
 
-    // Entre le mobile et 1700px : zoom minimum desktop
+    // Entre le mobile et 1290px : zoom minimum desktop
     if (width <= minWidth) {
         scaledContent.style.zoom = String(minZoom);
         return;
@@ -343,7 +331,7 @@ function updateDesktopZoom() {
         return;
     }
 
-    // Dézoom progressif entre 2300px et 1700px
+    // Dézoom progressif entre 2300px et 1920px
     const progress = (width - minWidth) / (maxWidth - minWidth);
 
     const zoom =
@@ -355,3 +343,93 @@ function updateDesktopZoom() {
 
 updateDesktopZoom();
 window.addEventListener("resize", updateDesktopZoom);
+
+
+// -------------------------
+// FORMULAIRE
+// -------------------------
+
+const inputFields = document.querySelectorAll("input");
+
+inputFields.forEach((field) => {
+    field.addEventListener("input", (event) => {
+        event.target.parentNode.classList.toggle(
+            "animation",
+            event.target.value !== ""
+        );
+    });
+});
+
+const API_BASE_URL =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+        ? "http://localhost:8001"
+        : "https://tom-mouquet-portfolio-api.onrender.com";
+
+
+/* =========================================
+   CONTACT FORM
+   ========================================= */
+
+const contactForm = document.querySelector("#contact-form");
+const contactStatus = document.querySelector("#contact-status");
+const contactSubmit = document.querySelector("#contact-submit");
+
+if (contactForm && contactStatus && contactSubmit) {
+
+    contactForm.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        const data = {
+            first_name: document.querySelector("#first-name").value.trim(),
+            last_name: document.querySelector("#last-name").value.trim(),
+            email: document.querySelector("#email").value.trim(),
+            company: document.querySelector("#company").value.trim() || null,
+            message: document.querySelector("#message").value.trim()
+        };
+
+        contactSubmit.disabled = true;
+        contactSubmit.textContent = "Sending...";
+        contactStatus.textContent = "";
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/contact`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to send message");
+            }
+
+            contactStatus.textContent = "Message sent successfully.";
+            contactForm.reset();
+
+            contactForm
+                .querySelectorAll(".form-groupe.animation")
+                .forEach((group) => {
+                    group.classList.remove("animation");
+                });
+
+        } catch (error) {
+
+            console.error(error);
+
+            contactStatus.textContent =
+                "Unable to send message. Please try again.";
+
+        } finally {
+
+            contactSubmit.disabled = false;
+            contactSubmit.textContent = "Send";
+        }
+    });
+}
