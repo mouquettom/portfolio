@@ -18,16 +18,13 @@
     --about-text-max-width: 996px;
 
 
-    /* =========================================
+    /* ==========================================
        ILLUSTRATIONS RESPONSIVES
-       ========================================= */
+    ========================================== */
 
-    /* Taille progressive sur desktop :
-       ~320px très large
-       ~270px vers 1920px
-       ~210px vers 1500px
-    */
-    --side-illustration-size: clamp(180px, 12vw, 300px);
+    --side-illustration-size: clamp(260px, 16vw, 300px);
+
+    /* Plus proche des bords */
     --side-illustration-edge: clamp(20px, 4.8vw, 120px);
 
     /* Distance de sécurité avec le contenu */
@@ -76,6 +73,8 @@ html {
 
 
 body {
+    zoom: 1;
+
     font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
 
     background-color: var(--background-main);
@@ -1131,15 +1130,13 @@ footer {
    RESPONSIVE
    ========================================= */
 
-
-
 /* =========================================
    <= 1440px
    Illustrations sous les titres,
    skills empilées et projets en 2 colonnes
    ========================================= */
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1580px) {
 
     #astronaut,
     #rocket {
@@ -1149,16 +1146,20 @@ footer {
         right: auto;
         top: auto;
 
-        width: clamp(200px, 10vw, 240px);
-        height: clamp(200px, 10vw, 240px);
+        width: clamp(300px, 10vw, 350px);
+        height: clamp(300px, 10vw, 350px);
     }
 
+    .cont-exp-travail {
+        margin: -60px;
+        width: min(980px, 90%);
+    }
 
     /* Astronaute juste sous ABOUT */
 
     #astronaut {
         margin:
-            -40px auto 35px;
+            -50px auto 35px;
     }
 
 
@@ -1166,13 +1167,12 @@ footer {
 
     #rocket {
         margin:
-            -60px auto 30px;
+            -15px auto 35px;
     }
 }
 
 
 @media screen and (max-width: 1280px) {
-
 
     /* HOME */
     .accueil {
@@ -1224,11 +1224,6 @@ footer {
     }
 
 
-    .txt-about {
-        width: min(900px, 90%);
-    }
-
-
     /* PROJECTS : 2 colonnes × 3 lignes */
     .container-portfolio {
         width: min(900px, 90%);
@@ -1240,6 +1235,7 @@ footer {
     }
 
     .cont-exp-travail {
+        margin: -40px;
         width: min(980px, 90%);
     }
 
@@ -1247,6 +1243,21 @@ footer {
     /* CONTACT */
     .container-form {
         width: min(900px, 90%);
+    }
+
+    /* Astronaute juste sous ABOUT */
+
+    #astronaut {
+        margin:
+            -40px auto 50px;
+    }
+
+
+    /* Fusée juste sous JOURNEY */
+
+    #rocket {
+        margin:
+            0 auto 25px;
     }
 }
 
@@ -1296,6 +1307,7 @@ footer {
     }
 
     .cont-exp-travail {
+        margin: -60px;
         width: min(820px, 94%);
     }
 
@@ -1315,7 +1327,7 @@ footer {
 @media screen and (max-width: 780px) {
 
     h2 {
-        font-size: 30px;
+        font-size: 35px;
         letter-spacing: 6px;
         margin: 55px 0;
     }

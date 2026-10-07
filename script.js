@@ -309,3 +309,43 @@ document.addEventListener("visibilitychange", () => {
         rocketAnim?.play();
     }
 });
+
+
+const ZOOM_START_WIDTH = 2300;
+const ZOOM_END_WIDTH = 1700;
+const RESPONSIVE_BREAKPOINT = 1280;
+
+const MAX_ZOOM = 1;
+const MIN_ZOOM = 0.88;
+
+function updateDesktopZoom() {
+    const width = window.innerWidth;
+
+    if (width <= RESPONSIVE_BREAKPOINT) {
+        document.body.style.zoom = String(MAX_ZOOM);
+        return;
+    }
+
+    if (width >= ZOOM_START_WIDTH) {
+        document.body.style.zoom = String(MAX_ZOOM);
+        return;
+    }
+
+    if (width <= ZOOM_END_WIDTH) {
+        document.body.style.zoom = String(MIN_ZOOM);
+        return;
+    }
+
+    const progress =
+        (width - ZOOM_END_WIDTH) /
+        (ZOOM_START_WIDTH - ZOOM_END_WIDTH);
+
+    const zoom =
+        MIN_ZOOM +
+        progress * (MAX_ZOOM - MIN_ZOOM);
+
+    document.body.style.zoom = String(zoom);
+}
+
+updateDesktopZoom();
+window.addEventListener("resize", updateDesktopZoom);
