@@ -307,10 +307,10 @@ function updateDesktopZoom() {
 
     const mobileBreakpoint = 768;
 
-    const minWidth = 1481;
+    const minWidth = 1920;
     const maxWidth = 2580;
 
-    const minZoom = 0.80;
+    const minZoom = 0.85;
     const maxZoom = 1;
 
     // MOBILE : on remonte volontairement l'échelle à 1
@@ -360,11 +360,11 @@ inputFields.forEach((field) => {
     });
 });
 
-const API_BASE_URL =
+const CONTACT_API_URL =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
-        ? "http://localhost:8001"
-        : "https://tom-mouquet-portfolio-api.onrender.com";
+        ? "http://localhost:8001/contact"
+        : "https://tom-mouquet-portfolio-form-api.onrender.com/contact";
 
 
 /* =========================================
@@ -396,7 +396,7 @@ if (contactForm && contactStatus && contactSubmit) {
         try {
 
             const response = await fetch(
-                `${API_BASE_URL}/contact`,
+                `${CONTACT_API_URL}`,
                 {
                     method: "POST",
                     headers: {
