@@ -311,40 +311,35 @@ document.addEventListener("visibilitychange", () => {
 });
 
 
-const ZOOM_START_WIDTH = 2300;
-const ZOOM_END_WIDTH = 1700;
-const RESPONSIVE_BREAKPOINT = 1280;
-
-const MAX_ZOOM = 1;
-const MIN_ZOOM = 0.88;
-
 function updateDesktopZoom() {
     const width = window.innerWidth;
+    const scaledContent = document.querySelector(".desktop-scaled-content");
 
-    if (width <= RESPONSIVE_BREAKPOINT) {
-        document.body.style.zoom = String(MAX_ZOOM);
+    if (!scaledContent) return;
+
+    // Le responsive classique reprend la main
+    if (width <= 1200) {
+        scaledContent.style.zoom = "1";
         return;
     }
 
-    if (width >= ZOOM_START_WIDTH) {
-        document.body.style.zoom = String(MAX_ZOOM);
+    // Taille intermédiaire
+    if (width <= 1700) {
+        scaledContent.style.zoom = "0.88";
         return;
     }
 
-    if (width <= ZOOM_END_WIDTH) {
-        document.body.style.zoom = String(MIN_ZOOM);
+    // Très grand écran
+    if (width >= 2300) {
+        scaledContent.style.zoom = "1";
         return;
     }
 
-    const progress =
-        (width - ZOOM_END_WIDTH) /
-        (ZOOM_START_WIDTH - ZOOM_END_WIDTH);
+    // Transition progressive entre 1700 et 2300
+    const progress = (width - 1700) / (2300 - 1700);
+    const scale = 0.88 + progress * (1 - 0.88);
 
-    const zoom =
-        MIN_ZOOM +
-        progress * (MAX_ZOOM - MIN_ZOOM);
-
-    document.body.style.zoom = String(zoom);
+    scaledContent.style.zoom = String(scale);
 }
 
 updateDesktopZoom();
