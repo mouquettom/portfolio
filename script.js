@@ -317,29 +317,32 @@ function updateDesktopZoom() {
 
     if (!scaledContent) return;
 
-    // Le responsive classique reprend la main
-    if (width <= 1480) {
-        scaledContent.style.zoom = "0.95";
+    const minWidth = 1700;
+    const maxWidth = 2500;
+
+    const minZoom = 0.85;
+    const maxZoom = 1;
+
+    // À 1700px et en dessous : zoom minimum
+    if (width <= minWidth) {
+        scaledContent.style.zoom = String(minZoom);
         return;
     }
 
-    // Taille intermédiaire
-    if (width <= 1481) {
-        scaledContent.style.zoom = "0.70";
+    // À 2300px et au-dessus : taille normale
+    if (width >= maxWidth) {
+        scaledContent.style.zoom = String(maxZoom);
         return;
     }
 
-    // Très grand écran
-    if (width >= 2500) {
-        scaledContent.style.zoom = "1";
-        return;
-    }
+    // Progression parfaitement continue entre 1700 et 2300px
+    const progress = (width - minWidth) / (maxWidth - minWidth);
 
-    // Transition progressive entre 1700 et 2300
-    const progress = (width - 1700) / (2300 - 1700);
-    const scale = 0.88 + progress * (1 - 0.88);
+    const zoom =
+        minZoom +
+        progress * (maxZoom - minZoom);
 
-    scaledContent.style.zoom = String(scale);
+    scaledContent.style.zoom = String(zoom);
 }
 
 updateDesktopZoom();
