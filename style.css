@@ -179,6 +179,7 @@ header {
 }
 
 
+
 /* Logo */
 
 .logo-circle {
@@ -1136,6 +1137,11 @@ footer {
 
 @media screen and (max-width: 1480px) {
 
+    .txt-about {
+        width: min(1400px, 100%);
+        font-size: 1.1rem;
+    }
+
     #astronaut,
     #rocket {
         position: relative;
@@ -1210,6 +1216,10 @@ footer {
         font-size: 1rem;
     }
 
+    .txt-about {
+        width: min(1000px, 90%);
+    }
+
 
     /* Marges de sécurité */
     .accueil,
@@ -1252,9 +1262,6 @@ footer {
 
 @media screen and (max-width: 980px) {
 
-    .txt-about {
-        width: min(850px, 90%);
-    }
 
     /* Skills verticales, centrées.
        skills-02 conserve 2/3 de la largeur de skills-01. */
@@ -1307,7 +1314,7 @@ footer {
    Garde-fous mobile - affinage à venir
    ========================================= */
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 768px) {
 
     h2 {
         font-size: 35px;

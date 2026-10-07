@@ -317,25 +317,33 @@ function updateDesktopZoom() {
 
     if (!scaledContent) return;
 
-    const minWidth = 1700;
-    const maxWidth = 2500;
+    const mobileBreakpoint = 768;
 
-    const minZoom = 0.83;
+    const minWidth = 1700;
+    const maxWidth = 2300;
+
+    const minZoom = 0.80;
     const maxZoom = 1;
 
-    // À 1700px et en dessous : zoom minimum
+    // MOBILE : on remonte volontairement l'échelle à 0.90
+    if (width <= mobileBreakpoint) {
+        scaledContent.style.zoom = "1";
+        return;
+    }
+
+    // Entre le mobile et 1700px : zoom minimum desktop
     if (width <= minWidth) {
         scaledContent.style.zoom = String(minZoom);
         return;
     }
 
-    // À 2300px et au-dessus : taille normale
+    // Très grand écran : taille normale
     if (width >= maxWidth) {
         scaledContent.style.zoom = String(maxZoom);
         return;
     }
 
-    // Progression parfaitement continue entre 1700 et 2300px
+    // Dézoom progressif entre 2300px et 1700px
     const progress = (width - minWidth) / (maxWidth - minWidth);
 
     const zoom =
