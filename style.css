@@ -179,7 +179,6 @@ header {
 }
 
 
-
 /* Logo */
 
 .logo-circle {
@@ -1135,7 +1134,7 @@ footer {
    skills empilées et projets en 2 colonnes
    ========================================= */
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1480px) {
 
     #astronaut,
     #rocket {

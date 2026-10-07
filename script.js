@@ -319,13 +319,13 @@ function updateDesktopZoom() {
 
     // Le responsive classique reprend la main
     if (width <= 1200) {
-        scaledContent.style.zoom = "0.90";
+        scaledContent.style.zoom = "1";
         return;
     }
 
     // Taille intermédiaire
-    if (width <= 1700) {
-        scaledContent.style.zoom = "0.80";
+    if (width <= 1480) {
+        scaledContent.style.zoom = "0.75";
         return;
     }
 
