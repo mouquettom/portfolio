@@ -320,7 +320,7 @@ function updateDesktopZoom() {
     const minWidth = 1700;
     const maxWidth = 2500;
 
-    const minZoom = 0.85;
+    const minZoom = 0.83;
     const maxZoom = 1;
 
     // À 1700px et en dessous : zoom minimum
