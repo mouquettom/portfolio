@@ -308,7 +308,7 @@ function updateDesktopZoom() {
     const mobileBreakpoint = 768;
 
     const minWidth = 1481;
-    const maxWidth = 2600;
+    const maxWidth = 2580;
 
     const minZoom = 0.85;
     const maxZoom = 1;
