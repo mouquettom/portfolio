@@ -58,15 +58,15 @@
 html,
 body {
     scroll-behavior: smooth;
-
     background: var(--background-main);
 
-    min-width: 600px;
+    width: 100%;
+    max-width: 100%;
 }
 
 
 html {
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 
@@ -77,10 +77,9 @@ body {
     font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
 
     background-color: var(--background-main);
-
     color: var(--text-main);
 
-    overflow-x: visible;
+    overflow-x: hidden;
 }
 
 
@@ -1338,34 +1337,51 @@ footer {
 
 @media screen and (max-width: 768px) {
 
+    header {
+        padding: 8px 14px;
+    }
+
+    .nav-bar {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .nav-menu {
+        gap: 10px;
+    }
+
+    .nav-menu a {
+        font-size: 0.9rem;
+    }
+
+    .nav-right {
+        gap: 10px;
+    }
+
+    .social-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+
     h2 {
         font-size: 35px;
         letter-spacing: 6px;
         margin: 55px 0;
     }
 
+
     .nav-left {
         display: none;
     }
 
-    .nav-menu a {
-        font-size: 1em;
-    }
-
-    .nav-right {
-        gap: 15px;
-    }
-
-    .social-icon {
-        width: 20px;
-        height: 20px;
-    }
 
     .accueil,
     .section-about,
     .portfolio,
     .experiences,
     .contact {
+        width: 100%;
         padding-left: 18px;
         padding-right: 18px;
     }
@@ -1373,10 +1389,13 @@ footer {
 
     .txt-about {
         width: 95%;
+        max-width: 100%;
         font-size: 0.95rem;
+
         text-align: justify;
         text-align-last: left;
     }
+
 
     .skills-animations {
         width: min(500px, 96%);
@@ -1384,8 +1403,15 @@ footer {
         gap: 24px;
     }
 
+
     .container-portfolio {
         width: min(400px, 100%);
+    }
+
+
+    .cont-exp-travail {
+        width: 100%;
+        margin: 0 auto;
     }
 
 
