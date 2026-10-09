@@ -2,10 +2,6 @@ import logging
 import os
 
 from dotenv import load_dotenv
-
-load_dotenv()
-
-
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -13,17 +9,25 @@ from backend.email_service import send_contact_email
 from backend.schemas import ContactMessage
 
 
+load_dotenv()
+
 logger = logging.getLogger(__name__)
 
 
+# =====================================
+# ENVIRONMENT VARIABLES
+# =====================================
 
-SMTP_USER = os.getenv("SMTP_USER")
-SMTP_APP_PASSWORD = os.getenv("SMTP_APP_PASSWORD")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 CONTACT_TO_EMAIL = os.getenv("CONTACT_TO_EMAIL")
 
-if not SMTP_USER or not SMTP_APP_PASSWORD or not CONTACT_TO_EMAIL:
+if not RESEND_API_KEY or not CONTACT_TO_EMAIL:
     raise RuntimeError("Missing email environment variables.")
 
+
+# =====================================
+# FASTAPI APP
+# =====================================
 
 app = FastAPI(
     title="Portfolio Contact API",
@@ -31,12 +35,17 @@ app = FastAPI(
 )
 
 
+# =====================================
+# CORS
+# =====================================
+
 default_origins = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://tommouquet.com",
+    "https://www.tommouquet.com",
     "https://tom-mouquet-portfolio.onrender.com",
 ]
-
 
 configured_origins = os.getenv("FRONTEND_ORIGINS")
 
@@ -59,18 +68,26 @@ app.add_middleware(
 )
 
 
+# =====================================
+# HEALTH CHECK
+# =====================================
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
 
 
+# =====================================
+# CONTACT FORM
+# =====================================
+
 @app.post(
     "/contact",
     status_code=status.HTTP_201_CREATED,
 )
-def submit_contact_form(contact: ContactMessage):
+async def submit_contact_form(contact: ContactMessage):
     try:
-        send_contact_email(contact)
+        await send_contact_email(contact)
 
     except Exception:
         logger.exception("Unable to send contact email")

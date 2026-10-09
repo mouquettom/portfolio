@@ -364,7 +364,7 @@ const CONTACT_API_URL =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
         ? "http://localhost:8001/contact"
-        : "https://tom-mouquet-portfolio-form-api.onrender.com/contact";
+        : "https://api.tommouquet.com/contact";
 
 
 /* =========================================
@@ -395,16 +395,13 @@ if (contactForm && contactStatus && contactSubmit) {
 
         try {
 
-            const response = await fetch(
-                `${CONTACT_API_URL}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                }
-            );
+            const response = await fetch(CONTACT_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
 
             if (!response.ok) {
                 throw new Error("Unable to send message");
