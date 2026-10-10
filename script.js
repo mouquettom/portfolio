@@ -1,4 +1,121 @@
 // -------------------------
+// LANGUE ET RESSOURCES
+// -------------------------
+
+// "en" sur tommouquet.com/, "fr" sur tommouquet.com/fr/ (lu dans <html lang>)
+const LANG = document.documentElement.lang.startsWith("fr") ? "fr" : "en";
+
+// Dossier du script : les chemins des animations restent justes depuis /fr/
+const ASSET_BASE = new URL(".", document.currentScript.src);
+
+function assetUrl(path) {
+    return new URL(path, ASSET_BASE).href;
+}
+
+const MESSAGES = {
+    en: {
+        send: "Send",
+        sending: "Sending...",
+        sent: "Message sent successfully.",
+        error: "Unable to send message. Please try again.",
+    },
+    fr: {
+        send: "Envoyer",
+        sending: "Envoi...",
+        sent: "Message envoyé, merci !",
+        error: "Le message n'a pas pu être envoyé. Veuillez réessayer.",
+    },
+}[LANG];
+
+
+// -------------------------
+// SÉLECTEUR DE LANGUE
+// -------------------------
+
+// On arrive dans l'autre langue sur la section que l'on lisait
+document.querySelectorAll(".lang-switch").forEach((link) => {
+    link.addEventListener("click", () => {
+        const sections = [...document.querySelectorAll("main section[id]")];
+        const current = sections
+            .filter((section) => section.getBoundingClientRect().top <= window.innerHeight * 0.35)
+            .pop();
+
+        const base = link.getAttribute("href").split("#")[0];
+
+        link.setAttribute(
+            "href",
+            current && current.id !== "accueil" ? `${base}#${current.id}` : base
+        );
+    });
+});
+
+
+// -------------------------
+// PRÉFÉRENCES
+// -------------------------
+
+// Respecte le réglage système « Réduire les animations »
+const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+).matches;
+
+
+// -------------------------
+// MENU MOBILE
+// -------------------------
+
+const navBar = document.querySelector(".nav-bar");
+const navToggle = document.querySelector(".nav-toggle");
+const navPanel = document.querySelector("#nav-panel");
+
+function setMenuOpen(open) {
+    navBar.classList.toggle("is-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+    const labels = LANG === "fr"
+        ? ["Fermer le menu", "Ouvrir le menu"]
+        : ["Close menu", "Open menu"];
+
+    navToggle.setAttribute("aria-label", open ? labels[0] : labels[1]);
+}
+
+if (navBar && navToggle && navPanel) {
+
+    navToggle.addEventListener("click", () => {
+        setMenuOpen(!navBar.classList.contains("is-open"));
+    });
+
+    // Un lien choisi : le panneau se ferme
+    navPanel.addEventListener("click", (event) => {
+        if (event.target.closest("a")) {
+            setMenuOpen(false);
+        }
+    });
+
+    // Clic en dehors du header
+    document.addEventListener("click", (event) => {
+        if (!navBar.contains(event.target)) {
+            setMenuOpen(false);
+        }
+    });
+
+    // Échap : ferme et rend le focus au bouton
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && navBar.classList.contains("is-open")) {
+            setMenuOpen(false);
+            navToggle.focus();
+        }
+    });
+
+    // Retour à une largeur où le menu complet s'affiche : on réinitialise
+    window.matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+        if (event.matches) {
+            setMenuOpen(false);
+        }
+    });
+}
+
+
+// -------------------------
 // PARTICULES
 // -------------------------
 
@@ -10,15 +127,28 @@ let particles = [];
 let animationId = null;
 let running = false;
 
+let canvasWidth = 0;
+let canvasHeight = 0;
+
+// Dessine en pixels physiques : particules nettes sur écran Retina
 function resizeCanvasToSection() {
-    canvas.width = section.clientWidth;
-    canvas.height = section.clientHeight;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvasWidth = section.clientWidth;
+    canvasHeight = section.clientHeight;
+
+    canvas.width = Math.round(canvasWidth * ratio);
+    canvas.height = Math.round(canvasHeight * ratio);
+
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
-window.addEventListener("resize", resizeCanvasToSection);
-resizeCanvasToSection();
+// Suit la taille réelle de la section (rotation, fenêtre redimensionnée…)
+new ResizeObserver(resizeCanvasToSection).observe(section);
 
 section.addEventListener("mousemove", (e) => {
+    if (reduceMotion) return;
+
     const rect = section.getBoundingClientRect();
 
     const x = e.clientX - rect.left;
@@ -39,7 +169,7 @@ section.addEventListener("mousemove", (e) => {
 function animate() {
     if (!running) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -90,7 +220,7 @@ function animate() {
 }
 
 function startParticles() {
-    if (running) return;
+    if (running || reduceMotion) return;
 
     running = true;
     animate();
@@ -138,6 +268,36 @@ document.addEventListener("visibilitychange", () => {
 // LOTTIE
 // -------------------------
 
+// Joue une animation seulement quand elle est à l'écran
+// et que l'onglet est actif (batterie et CPU épargnés sur mobile).
+function playWhenVisible(animation, element) {
+    let ready = false;
+    let visible = false;
+
+    function update() {
+        if (!ready) return;
+
+        if (visible && !document.hidden) {
+            animation.play();
+        } else {
+            animation.pause();
+        }
+    }
+
+    animation.addEventListener("DOMLoaded", () => {
+        ready = true;
+        update();
+    });
+
+    new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        update();
+    }).observe(element);
+
+    document.addEventListener("visibilitychange", update);
+}
+
+
 function loadLottieAnimation(containerId, animationPath, animationName) {
     const container = document.getElementById(containerId);
 
@@ -155,7 +315,7 @@ function loadLottieAnimation(containerId, animationPath, animationName) {
         container: container,
         renderer: "svg",
         loop: true,
-        autoplay: true,
+        autoplay: false,
         path: animationPath,
         name: animationName
     });
@@ -170,22 +330,31 @@ function loadLottieAnimation(containerId, animationPath, animationName) {
         );
     });
 
+    if (reduceMotion) {
+        // Image fixe à la place de la boucle
+        animation.addEventListener("DOMLoaded", () => {
+            animation.goToAndStop(0, true);
+        });
+    } else {
+        playWhenVisible(animation, container);
+    }
+
     return animation;
 }
 
 
 // Astronaute
-const astronautAnim = loadLottieAnimation(
+loadLottieAnimation(
     "astronaut",
-    "./ressources/animations/astronaut.json",
+    assetUrl("ressources/animations/astronaut.json"),
     "astronaut"
 );
 
 
 // Fusée
-const rocketAnim = loadLottieAnimation(
+loadLottieAnimation(
     "rocket",
-    "./ressources/animations/rocket.json",
+    assetUrl("ressources/animations/rocket.json"),
     "rocket"
 );
 
@@ -246,6 +415,15 @@ function loadSkillsAnimation(containerId, animationPath) {
 
             animation.addEventListener("DOMLoaded", () => {
                 ready = true;
+
+                if (reduceMotion) {
+                    // Affiche directement le schéma complet
+                    animation.goToAndStop(animation.totalFrames - 1, true);
+                    completed = true;
+                    stopWatching();
+                    return;
+                }
+
                 updatePlayback();
             });
 
@@ -274,75 +452,13 @@ function loadSkillsAnimation(containerId, animationPath) {
 
 loadSkillsAnimation(
     "skills-01",
-    "./ressources/animations/skills-01.json"
+    assetUrl("ressources/animations/skills-01.json")
 );
 
 loadSkillsAnimation(
     "skills-02",
-    "./ressources/animations/skills-02.json"
+    assetUrl("ressources/animations/skills-02.json")
 );
-
-
-// Pause quand l'onglet n'est plus visible : astronaute et fusée.
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        astronautAnim?.pause();
-        rocketAnim?.pause();
-    } else {
-        astronautAnim?.play();
-        rocketAnim?.play();
-    }
-});
-
-
-/* =========================================
-   DE-ZOOM — RESPONSIVE
-   ========================================= */
-
-function updateDesktopZoom() {
-    const width = window.innerWidth;
-    const scaledContent = document.querySelector(".desktop-scaled-content");
-
-    if (!scaledContent) return;
-
-    const mobileBreakpoint = 768;
-
-    const minWidth = 1920;
-    const maxWidth = 2580;
-
-    const minZoom = 0.85;
-    const maxZoom = 1;
-
-    // MOBILE : on remonte volontairement l'échelle à 1
-    if (width <= mobileBreakpoint) {
-        scaledContent.style.zoom = "1";
-        return;
-    }
-
-    // Entre le mobile et 1290px : zoom minimum desktop
-    if (width <= minWidth) {
-        scaledContent.style.zoom = String(minZoom);
-        return;
-    }
-
-    // Très grand écran : taille normale
-    if (width >= maxWidth) {
-        scaledContent.style.zoom = String(maxZoom);
-        return;
-    }
-
-    // Dézoom progressif entre 2580px et 1700px
-    const progress = (width - minWidth) / (maxWidth - minWidth);
-
-    const zoom =
-        minZoom +
-        progress * (maxZoom - minZoom);
-
-    scaledContent.style.zoom = String(zoom);
-}
-
-updateDesktopZoom();
-window.addEventListener("resize", updateDesktopZoom);
 
 
 // -------------------------
@@ -390,7 +506,7 @@ if (contactForm && contactStatus && contactSubmit) {
         };
 
         contactSubmit.disabled = true;
-        contactSubmit.textContent = "Sending...";
+        contactSubmit.textContent = MESSAGES.sending;
         contactStatus.textContent = "";
 
         try {
@@ -407,7 +523,7 @@ if (contactForm && contactStatus && contactSubmit) {
                 throw new Error("Unable to send message");
             }
 
-            contactStatus.textContent = "Message sent successfully.";
+            contactStatus.textContent = MESSAGES.sent;
             contactForm.reset();
 
             contactForm
@@ -420,13 +536,88 @@ if (contactForm && contactStatus && contactSubmit) {
 
             console.error(error);
 
-            contactStatus.textContent =
-                "Unable to send message. Please try again.";
+            contactStatus.textContent = MESSAGES.error;
 
         } finally {
 
             contactSubmit.disabled = false;
-            contactSubmit.textContent = "Send";
+            contactSubmit.textContent = MESSAGES.send;
         }
     });
+}
+
+
+/* =========================================
+   CASE STUDIES (fiches projet)
+   Une carte ouvre sa fiche (<dialog>).
+   Lien direct partageable : tommouquet.com/#epic-events
+   ========================================= */
+
+let lastProjectOpener = null;
+
+function openProject(projectId, opener) {
+    const dialog = document.getElementById(projectId);
+
+    if (!dialog || !dialog.classList.contains("project-dialog")) return;
+
+    // Navigateur trop ancien : on envoie vers le code sur GitHub
+    if (typeof dialog.showModal !== "function") {
+        const codeLink = dialog.querySelector(".dialog-actions a");
+        if (codeLink) window.open(codeLink.href, "_blank", "noopener");
+        return;
+    }
+
+    lastProjectOpener = opener || null;
+
+    dialog.showModal();
+    dialog.scrollTop = 0;
+
+    history.replaceState(null, "", `#${projectId}`);
+}
+
+document.querySelectorAll(".project-open").forEach((button) => {
+    button.addEventListener("click", () => {
+        openProject(button.dataset.project, button);
+    });
+});
+
+document.querySelectorAll(".project-dialog").forEach((dialog) => {
+
+    dialog.addEventListener("click", (event) => {
+
+        // Clic sur le fond assombri ou sur la croix
+        if (event.target === dialog || event.target.closest(".dialog-close")) {
+            dialog.close();
+            return;
+        }
+
+        // Lien interne (« Try the form ») : on ferme puis on suit le lien
+        if (event.target.closest("[data-close-dialog]")) {
+            lastProjectOpener = null;
+            dialog.close();
+        }
+    });
+
+    dialog.addEventListener("close", () => {
+
+        if (location.hash === `#${dialog.id}`) {
+            history.replaceState(null, "", location.pathname + location.search);
+        }
+
+        // Le focus revient sur la carte qui a ouvert la fiche
+        if (lastProjectOpener) {
+            lastProjectOpener.focus({ preventScroll: true });
+            lastProjectOpener = null;
+        }
+    });
+});
+
+// Ouverture directe depuis l'URL
+const initialProject = location.hash.slice(1);
+
+if (initialProject) {
+    openProject(
+        initialProject,
+        document.querySelector(`.project-open[data-project="${CSS.escape(initialProject)}"]`)
+    );
 }

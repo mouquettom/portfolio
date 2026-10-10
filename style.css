@@ -2,43 +2,70 @@
    VARIABLES
    ========================================= */
 
+/*
+    ÉCHELLE DU SITE
+    Les sections About, Projects, Journey et Contact reprennent
+    l'aperçu de l'ancienne version à 1920 px (zoom 0,85),
+    mais en tailles réelles : plus aucun zoom JavaScript.
+    Ex. : titres 40 px → 34 px, cartes 1050 px → 892 px.
+*/
+
 :root {
 
     --background-main: #f1f1f1;
     --background-section: #ededed;
+    --background-card: #f0f2f0;
+    --background-header: #333333;
 
     --text-main: #333333;
     --text-secondary: #606060;
+    --text-muted: #6b6b6b;
 
     --accent: #008494;
 
-    /* Réglages About : espace inférieur et largeur du texte sur grand écran. */
-    --about-bottom-space: 48px;
-    --about-text-width: 75%;
-    --about-text-max-width: 996px;
+
+    /* ==========================================
+       MISE EN PAGE
+    ========================================== */
+
+    /* Marge latérale des sections : 16px (mobile) → 40px */
+    --gutter: clamp(16px, 4vw, 40px);
+
+    /* Largeurs maximales (anciennes valeurs × 0,85) */
+    /* Projets, timeline, texte About et formulaire partagent la même
+       largeur : leurs bords s'alignent d'une section à l'autre */
+    --content-max: 892px;
+    --text-max: 892px;         /* texte About + atouts */
+    --form-max: 892px;         /* formulaire */
+
+    /* Hauteur du header fixe (ancres + menu mobile) */
+    --header-height: 76px;
+
+    /* Espace autour des titres de section : 44px → 68px */
+    --title-space: clamp(44px, 3.6vw, 68px);
 
 
     /* ==========================================
-       ILLUSTRATIONS RESPONSIVES
+       ILLUSTRATIONS (astronaute, fusée)
     ========================================== */
 
-    --side-illustration-size: 300px;
+    /* 219px (1481px) → 255px (1920px et plus) */
+    --side-illustration-size: clamp(215px, 98px + 8.2vw, 255px);
 
-    /* Plus proche des bords */
-    --side-illustration-edge: clamp(10px, 2.5vw, 120px);
+    /* Distance au bord de l'écran */
+    --side-illustration-edge: clamp(10px, 2.1vw, 100px);
 
-    /* Distance de sécurité avec le contenu */
-    --side-illustration-gap: 36px;
+    --astronaut-top: 323px;
+    --rocket-top: 450px;
 
-    --astronaut-top: 380px;
-    --rocket-top: 530px;
 
-    /*
-        Expériences
-    */
+    /* ==========================================
+       TIMELINE
+    ========================================== */
 
-    --journey-height: 880px;
-    --journey-entry-offset: 74px;
+    --timeline-dot: 48px;
+    --timeline-end: 42px;
+    --timeline-gap: clamp(14px, 3.4vw, 54px);
 }
 
 
@@ -47,7 +74,9 @@
    RESET
    ========================================= */
 
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -55,37 +84,77 @@
 
 
 
-html,
-body {
+html {
     scroll-behavior: smooth;
+
     background: var(--background-main);
 
-    width: 100%;
+    /* Empêche iOS d'agrandir le texte en mode paysage */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+
+
+body {
+    font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+    background-color: var(--background-main);
+
+    color: var(--text-main);
+}
+
+
+
+img {
+    display: block;
+
     max-width: 100%;
 }
 
 
-html {
-    overflow-x: hidden;
-}
 
+/* Les champs de formulaire n'héritent pas de la police par défaut */
+input,
+textarea,
+button {
+    font: inherit;
 
-
-body {
-    zoom: 1;
-
-    font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-
-    background-color: var(--background-main);
-    color: var(--text-main);
-
-    overflow-x: hidden;
+    color: inherit;
 }
 
 
 
 section {
-    scroll-margin-top: 100px;
+    /* L'ancre arrive juste sous le header fixe */
+    scroll-margin-top: var(--header-height);
+}
+
+
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+
+    outline-offset: 3px;
+}
+
+
+
+/* Visible uniquement par les lecteurs d'écran et les robots */
+.sr-only {
+    position: absolute !important;
+
+    width: 1px;
+    height: 1px;
+
+    margin: -1px;
+    padding: 0;
+
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+
+    border: 0;
 }
 
 
@@ -126,15 +195,64 @@ h2 {
         'Helvetica Neue',
         sans-serif;
 
-    font-size: 2.5em;
+    /* 28px (mobile) → 34px dès la tablette */
+    font-size: clamp(1.75rem, 1.2rem + 1.4vw, 2.125rem);
 
     text-align: center;
 
-    margin: 80px 0;
+    margin: var(--title-space) 0;
 
     font-weight: 600;
 
-    letter-spacing: 12px;
+    letter-spacing: 0.3em;
+
+    /* Compense l'espace ajouté après la dernière lettre
+       pour que le titre soit vraiment centré */
+    padding-left: 0.3em;
+}
+
+
+
+/* Bouton-lien (fiches projet), dans le style du bouton « Send » */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 22px;
+
+    border: 1px solid #555;
+    border-radius: 13px;
+
+    background: transparent;
+
+    color: var(--text-main);
+
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease;
+}
+
+.btn:hover {
+    background: #333;
+    border-color: #333;
+    color: #ffffff;
+}
+
+.btn-primary {
+    background: #333;
+    border-color: #333;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
 }
 
 
@@ -144,18 +262,23 @@ h2 {
    ========================================= */
 
 header {
-    background-color: #333;
-
-    padding: 8px 40px;
-
     position: fixed;
-
-    width: 100%;
 
     top: 0;
     left: 0;
+    right: 0;
 
     z-index: 100;
+
+    padding: 8px clamp(16px, 3vw, 40px);
+
+    background-color: var(--background-header);
+}
+
+
+
+header :focus-visible {
+    outline-color: #ffffff;
 }
 
 
@@ -164,22 +287,35 @@ header {
     /* 75% sur grand écran, puis progressivement jusqu'à 100% */
     width: clamp(75%, calc(50% + 460px), 100%);
 
-    max-width: none;
+    margin: 0 auto;
 
-    margin:0 auto;
-
-    /* Conserve la hauteur quand la signature disparaît */
     min-height: 60px;
 
-    display: flex;
+    /* 3 colonnes : le menu reste parfaitement centré,
+       quelle que soit la largeur du logo et des icônes */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(12px, 2vw, 32px);
+    column-gap: clamp(12px, 2vw, 32px);
+}
+
+
+
+/* Sur desktop, le panneau n'existe pas visuellement :
+   ses enfants se placent directement dans la grille */
+.nav-panel {
+    display: contents;
 }
 
 
 
 /* Logo */
+
+.nav-left {
+    justify-self: start;
+}
+
+
 
 .logo-circle {
     width: 60px;
@@ -190,6 +326,14 @@ header {
     background-color: var(--background-main);
 
     overflow: hidden;
+}
+
+
+
+.logo-circle:focus-within {
+    outline: 2px solid #ffffff;
+
+    outline-offset: 3px;
 }
 
 
@@ -215,7 +359,10 @@ header {
 /* Navigation */
 
 .nav-menu {
+    justify-self: center;
+
     list-style: none;
+
     display: flex;
 
     /* Espacement progressif entre les rubriques */
@@ -231,9 +378,7 @@ header {
 
     font-size: 1.10em;
 
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+    transition: opacity 0.25s ease;
 }
 
 
@@ -247,11 +392,19 @@ header {
 /* Réseaux */
 
 .nav-right {
+    justify-self: end;
+
     display: flex;
 
     align-items: center;
 
     gap: 22px;
+}
+
+
+
+.nav-right a {
+    display: block;
 }
 
 
@@ -275,14 +428,114 @@ header {
 
 
 
+/* Bouton du menu mobile (masqué sur desktop) */
+
+.nav-toggle {
+    display: none;
+
+    position: relative;
+
+    width: 44px;
+    height: 44px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+
+
+.nav-toggle-bar,
+.nav-toggle-bar::before,
+.nav-toggle-bar::after {
+    position: absolute;
+
+    width: 22px;
+    height: 2px;
+
+    border-radius: 2px;
+
+    background-color: currentColor;
+}
+
+
+
+.nav-toggle-bar {
+    top: 50%;
+    left: 11px;
+
+    margin-top: -1px;
+
+    transition: background-color 0.2s ease;
+}
+
+
+
+.nav-toggle-bar::before,
+.nav-toggle-bar::after {
+    content: "";
+
+    left: 0;
+
+    transition: transform 0.25s ease;
+}
+
+
+
+.nav-toggle-bar::before {
+    transform: translateY(-7px);
+}
+
+
+
+.nav-toggle-bar::after {
+    transform: translateY(7px);
+}
+
+
+
+/* Croix quand le menu est ouvert */
+
+.nav-bar.is-open .nav-toggle-bar {
+    background-color: transparent;
+}
+
+
+
+.nav-bar.is-open .nav-toggle-bar::before {
+    transform: rotate(45deg);
+}
+
+
+
+.nav-bar.is-open .nav-toggle-bar::after {
+    transform: rotate(-45deg);
+}
+
+
+
 /* =========================================
    HOME
    ========================================= */
 
 .accueil {
+    position: relative;
+
     width: 100%;
 
-    height: 100vh;
+    /* min-height plutôt que height : le contenu n'est jamais coupé
+       (téléphone en paysage). svh = hauteur visible sur mobile. */
+    min-height: 100vh;
+    min-height: 100svh;
+
+    /* Padding symétrique : le centrage reste identique,
+       mais le texte ne passe jamais sous le header */
+    padding: var(--header-height) var(--gutter);
 
     display: flex;
 
@@ -292,8 +545,6 @@ header {
     flex-direction: column;
 
     text-align: center;
-
-    position: relative;
 
     overflow: hidden;
 }
@@ -309,8 +560,6 @@ header {
     height: 100%;
 
     z-index: 0;
-
-    pointer-events: auto;
 }
 
 
@@ -362,7 +611,6 @@ header {
 
 
 .hero-description {
-
     padding-top: 22px;
 
     font-size: 1.10em;
@@ -377,6 +625,31 @@ header {
 
     animation:
         apparition 0.6s ease-out 1.2s forwards;
+}
+
+
+
+/* « Tom Mouquet · Python back-end developer » */
+.hero-signature {
+    padding-top: 22px;
+
+    font-size: 0.95rem;
+
+    letter-spacing: 0.3px;
+
+    color: var(--text-muted);
+
+    opacity: 0;
+
+    transform: translateY(-30px);
+
+    animation:
+        apparition 0.6s ease-out 1.5s forwards;
+}
+
+/* Sur petit écran, le retour à la ligne se fait entre le nom et le poste */
+.hero-signature span {
+    white-space: nowrap;
 }
 
 
@@ -397,9 +670,9 @@ header {
    ========================================= */
 
 .section-about {
-    width: 100%;
-
     position: relative;
+
+    z-index: 5;
 
     display: flex;
 
@@ -407,43 +680,80 @@ header {
 
     align-items: center;
 
+    padding: 0 var(--gutter) 41px;
+
     background-color: var(--background-section);
-
-    z-index: 5;
-
-    height: auto;
-
-    max-height: none;
-
-    min-height: 0;
-
-    padding-bottom: var(--about-bottom-space);
 }
 
 
 
-/*
-    Contenu texte About
-
-    Largeur réglable dans :root via --about-text-width
-    et --about-text-max-width. Les règles mobiles restent en bas du fichier.
-*/
-
 .txt-about {
-    width: var(--about-text-width);
+    width: 100%;
 
-    max-width: var(--about-text-max-width);
+    max-width: var(--text-max);
 
-    margin: 0 auto;
-
-    letter-spacing: 0.6px;
+    letter-spacing: 0.5px;
 
     line-height: 1.7;
 
-    font-size: 1.05rem;
+    /* 14.4px */
+    font-size: 0.9rem;
+}
 
-    text-align: justify;
-    text-align-last: left;
+
+
+.txt-about p + p {
+    margin-top: 1.7em;
+}
+
+
+
+/* ------------ What I bring ------------ */
+
+.strengths {
+    width: 100%;
+    max-width: var(--text-max);
+
+    margin-top: 44px;
+
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+
+
+.strength {
+    padding: 20px 19px;
+
+    border-top: 3px solid var(--accent);
+    border-radius: 17px;
+
+    background: var(--background-main);
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+}
+
+
+
+.strength h3 {
+    margin-bottom: 8px;
+
+    font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+
+
+.strength p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+
+    color: var(--text-secondary);
 }
 
 
@@ -451,6 +761,12 @@ header {
 /* =========================================
    ASTRONAUT
    ========================================= */
+
+/*
+    Grand écran : l'astronaute flotte sur le côté.
+    Tout déplacement se fait via --astronaut-top,
+    --side-illustration-edge et --side-illustration-size.
+*/
 
 #astronaut {
     position: absolute;
@@ -463,57 +779,65 @@ header {
     top: var(--astronaut-top);
 
     z-index: 6;
+
     pointer-events: none;
 }
 
 
-/*
-    Tout déplacement de l'astronaute
-    se fait uniquement ici :
-
-    --astronaut-left
-    --astronaut-top
-    --astronaut-size
-
-    Le texte et la constellation
-    ne bougeront pas.
-*/
-
 
 /* =========================================
    SKILLS LOTTIE
+   Les deux schémas gardent leur format d'origine
+   (600 × 341 et 400 × 309) : rien n'est déformé.
    ========================================= */
-
 
 .skills-animations {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    align-items: center;
-    gap: clamp(100px, 3vw, 40px);
 
-    width: min(1000px, 94%);
-    margin: 100px auto 0;
-    margin-bottom: 50px;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+
+    align-items: center;
+
+    gap: clamp(34px, 5vw, 85px);
+
+    width: min(100%, 850px);
+
+    margin: 72px auto 42px;
 }
+
+
 
 .skills-animations > div {
     min-width: 0;
+
     width: 100%;
 }
+
+
 
 #skills-01 {
     aspect-ratio: 600 / 341;
 }
 
+
+
 #skills-02 {
     aspect-ratio: 400 / 309;
+
+    /* Aligne « Render » sur « SQLAlchemy · PostgreSQL » (même ligne de base)
+       sans changer l'échelle : décalage proportionnel à la hauteur du schéma */
+    transform: translateY(3.8%);
 }
+
+
 
 .skills-animations svg {
     display: block;
+
     width: 100%;
     height: 100%;
 }
+
 
 
 /* =========================================
@@ -521,7 +845,9 @@ header {
    ========================================= */
 
 .portfolio {
-    width: 100%;
+    position: relative;
+
+    z-index: 5;
 
     display: flex;
 
@@ -529,77 +855,101 @@ header {
 
     align-items: center;
 
-    position: relative;
-
-    padding-bottom: 100px;
+    padding: 0 var(--gutter) 85px;
 
     background-color: var(--background-main);
+}
 
-    z-index: 5;
+
+
+/* Phrase d'introduction (Projects, Contact) :
+   une seule ligne sur ordinateur, lignes équilibrées sur mobile */
+.section-intro {
+    margin: calc(var(--title-space) * -0.5) auto 40px;
+    padding: 0 8px;
+
+    text-align: center;
+
+    font-size: 0.9375rem;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+
+    color: var(--text-secondary);
+
+    text-wrap: balance;
 }
 
 
 
 .container-portfolio {
-    width: 75%;
-
-    max-width: 1050px;
-
-    margin: 0 auto;
+    width: min(100%, var(--content-max));
 
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    gap: 40px;
+    gap: 34px;
 }
 
 
 
+/* ------------ Carte ------------ */
+
 .item {
-    width: 100%;
+    position: relative;
 
-    min-height: 340px;
+    min-height: 289px;
 
-    background: #f0f2f0;
+    display: flex;
+
+    flex-direction: column;
+
+    background: var(--background-card);
 
     color: var(--text-main);
 
-    border-radius: 30px;
+    border-radius: 25px;
 
     overflow: hidden;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.16);
 
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
-
-    box-shadow:
-        0 5px 18px rgba(0, 0, 0, 0.18);
 }
 
 
 
-.item:hover {
-    transform: translateY(-8px);
+/* Pas d'effet de survol « collé » sur écran tactile */
+@media (hover: hover) {
 
-    box-shadow:
-        0 12px 25px rgba(0, 0, 0, 0.18);
+    .item:hover {
+        transform: translateY(-7px);
+
+        box-shadow: 0 10px 21px rgba(0, 0, 0, 0.16);
+    }
+
+    .item:hover .project-more {
+        color: var(--accent);
+    }
+
 }
 
 
-.project-link {
-    display: block;
-    height: 100%;
-    color: inherit;
-    text-decoration: none;
+
+/* Navigation clavier : la carte entière s'entoure */
+.item:has(.project-open:focus-visible) {
+    outline: 2px solid var(--accent);
+
+    outline-offset: 4px;
 }
+
 
 
 .container-image-porftolio {
-    width: 100%;
-
-    height: 180px;
+    /* Même format que les images (750 × 422) : rien n'est rogné */
+    aspect-ratio: 16 / 9;
 
     overflow: hidden;
 }
@@ -615,35 +965,142 @@ header {
 
 
 
+.item-body {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 14px 15px 16px;
+}
+
+
+
+/* « OpenClassrooms project » / « Personal project » */
+.project-kind {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: var(--accent);
+}
+
+.project-kind-personal {
+    color: #8a5a00;
+}
+
+
+
 .item h3 {
-    padding: 20px 18px 0;
+    margin-top: 6px;
+
+    font-size: 17px;
 
     letter-spacing: 0.25px;
+}
 
-    font-size: 20px;
+
+
+/* Le titre est un bouton qui couvre toute la carte */
+.project-open {
+    appearance: none;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-radius: 0;
+
+    background: none;
+
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.project-open::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+}
+
+.project-open:focus-visible {
+    outline: none;
 }
 
 
 
 .item p {
-    padding:
-        14px 18px 0;
+    padding-top: 8px;
 
-    font-size: 14px;
+    font-size: 12px;
 
     letter-spacing: 0.25px;
 
     line-height: 1.5;
 }
 
+.item .project-kind {
+    padding: 0;
+}
+
 
 
 .item .project-stack {
-    padding-top: 16px;
+    padding-top: 10px;
 
-    font-size: 11px;
+    font-size: 10.5px;
 
-    color: #888;
+    color: var(--text-muted);
+}
+
+
+
+/* « See details » à gauche, lien GitHub à droite */
+.item .project-footer {
+    margin-top: auto;
+    padding-top: 14px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.project-more {
+    transition: color 0.25s ease;
+}
+
+.project-more::after {
+    content: " →";
+}
+
+
+
+/* Le lien GitHub passe au-dessus de la zone cliquable de la carte */
+.project-code {
+    position: relative;
+    z-index: 2;
+
+    padding: 6px 2px;
+
+    color: var(--text-secondary);
+
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.project-code:hover {
+    color: var(--accent);
 }
 
 
@@ -653,7 +1110,9 @@ header {
    ========================================= */
 
 .experiences {
-    width: 100%;
+    position: relative;
+
+    z-index: 5;
 
     display: flex;
 
@@ -661,80 +1120,87 @@ header {
 
     align-items: center;
 
-    position: relative;
-
-    padding-bottom: 80px;
+    padding: 0 var(--gutter) 68px;
 
     background-color: var(--background-section);
-
-    z-index: 5;
 }
 
 
-/* Timeline */
+
+.titre-travail-exp {
+    margin-bottom: 34px;
+}
+
+
 
 /* =========================================
    JOURNEY - TIMELINE
    ========================================= */
 
-.cont-exp-travail {
-    width: min(1050px, 75%);
+/*
+    Chaque étape est une ligne : logo + texte.
+    La hauteur s'adapte au texte, le logo reste toujours
+    aligné avec son titre, à toutes les largeurs.
+*/
 
-    margin: 0 auto;
-
+.timeline {
     position: relative;
 
-    display: grid;
-    grid-template-columns: 58px minmax(0, 1fr);
-    column-gap: clamp(12px, 5vw, 64px);
+    width: min(100%, var(--content-max));
 
-    align-items: stretch;
+    margin-top: 40px;
+
+    list-style: none;
 }
 
 
-/* ------------ Ligne verticale ------------ */
 
-.barre-verticale {
-    width: 58px;
-    height: var(--journey-height);
-
-    position: relative;
-
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
-
-    align-items: center;
-    justify-items: center;
-
-    background: transparent;
-
-    flex-shrink: 0;
-}
-
-.barre-verticale::before {
+/* Ligne verticale : du centre du premier logo au centre de la fusée */
+.timeline::before {
     content: "";
 
     position: absolute;
 
-    left: 50%;
-    top: 10%;
-    bottom: 10%;
+    top: calc(var(--timeline-dot) / 2);
+    bottom: calc(var(--timeline-end) / 2);
+    left: calc(var(--timeline-dot) / 2 - 1px);
 
     width: 2px;
 
     background: #333;
-
-    transform: translateX(-50%);
-
-    z-index: 0;
 }
+
+
+
+/* ------------ Une étape ------------ */
+
+.bloc {
+    display: grid;
+
+    grid-template-columns: var(--timeline-dot) minmax(0, 1fr);
+
+    column-gap: var(--timeline-gap);
+
+    padding-bottom: 46px;
+}
+
+
+
+.bloc-content {
+    min-width: 0;
+}
+
 
 
 /* ------------ Points / logos ------------ */
 
 .boule-ico {
-    width: 56px;
-    height: 56px;
+    position: relative;
+
+    z-index: 1;
+
+    width: var(--timeline-dot);
+    height: var(--timeline-dot);
 
     border-radius: 50%;
 
@@ -746,8 +1212,6 @@ header {
     justify-content: center;
     align-items: center;
 
-    flex-shrink: 0;
-
     cursor: pointer;
 
     transition:
@@ -756,87 +1220,76 @@ header {
 }
 
 
-.boule-ico:hover {
-    transform: scale(1.15);
-    border-color: var(--accent);
+
+@media (hover: hover) {
+
+    .boule-ico:hover {
+        transform: scale(1.15);
+
+        border-color: var(--accent);
+    }
+
 }
 
 
+
 .boule-ico img {
-    width: 45px;
-    height: 45px;
+    width: 80%;
+    height: 80%;
 
     object-fit: contain;
 }
 
-.plane {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid #333;
-    background: #f1f1f1;
+
+
+/* ------------ Fusée de fin ------------ */
+
+.timeline-end {
     display: flex;
+
     justify-content: center;
-    align-items: center;
+
+    width: var(--timeline-dot);
 }
 
-.plane img {
-    width: 48px;
-}
 
-.boule-ico,
+
 .plane {
     position: relative;
 
     z-index: 1;
 
-    align-self: center;
-    justify-self: center;
-}
+    width: var(--timeline-end);
+    height: var(--timeline-end);
 
+    border-radius: 50%;
 
-/* ------------ Colonne de contenu ------------ */
+    border: 1px solid #333;
 
-.flex-cont-bloc-exp {
-    width: 100%;
-    height: var(--journey-height);
+    background: var(--background-main);
 
-    padding: 0;
-
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
-
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
 
-/* ------------ Une étape ------------ */
 
-.bloc {
-    width: 100%;
-    height: auto;
-
-    margin: 0;
-
-    align-self: start;
-
-    transform: translateY(var(--journey-entry-offset));
+.plane img {
+    width: 96%;
 }
+
 
 
 /* ------------ Ligne organisme + date ------------ */
-
-.titre-travail-exp {
-    margin-bottom: 40px;
-}
 
 .titre-section-bloc {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
 
-    margin: 0;
-    padding: 0;
+    /* Centre la première ligne du titre sur le logo */
+    padding-top: calc((var(--timeline-dot) - 1.2 * 19px) / 2);
 
     font-family:
         'Montserrat',
@@ -850,25 +1303,27 @@ header {
 }
 
 
+
 /* Organisme */
 
 .journey-name {
-    font-size: 1.4rem;
+    font-size: 19px;
 
     font-weight: 600;
 
-    letter-spacing: 1px;
+    letter-spacing: 0.85px;
 
     color: var(--text-main);
 }
 
 
+
 /* Séparateur | */
 
 .journey-separator {
-    margin: 0 18px;
+    margin: 0 15px;
 
-    font-size: 1.15rem;
+    font-size: 15.5px;
 
     font-weight: 400;
 
@@ -876,14 +1331,15 @@ header {
 }
 
 
+
 /* Date */
 
 .journey-date {
-    font-size: 1rem;
+    font-size: 13.6px;
 
     font-weight: 500;
 
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
 
     color: var(--accent);
 
@@ -891,20 +1347,15 @@ header {
 }
 
 
+
 /* ------------ Fonction / diplôme ------------ */
 
 .journey-role {
-    margin-top: 10px;
+    margin-top: 8px;
 
-    font-family:
-        'Montserrat',
-        'Helvetica Neue',
-        Arial,
-        sans-serif;
+    font-size: 15.2px;
 
-    font-size: 1.12rem;
-
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 
     font-weight: 500;
 
@@ -916,33 +1367,19 @@ header {
 }
 
 
+
 /* ------------ Description ------------ */
 
 .txt-section {
-    width: 95%;
-    max-width: none;
+    margin-top: 10px;
 
-    margin-top: 12px;
-
-    font-family:
-        'Montserrat',
-        'Helvetica Neue',
-        Arial,
-        sans-serif;
-
-    font-size: 1rem;
+    font-size: 13.6px;
     font-weight: 400;
 
     line-height: 1.55;
-    letter-spacing: 0.25px;
+    letter-spacing: 0.2px;
 
     color: var(--text-secondary);
-
-    text-align: justify;
-    text-align-last: left;
-
-    hyphens: auto;
-    -webkit-hyphens: auto;
 }
 
 
@@ -962,8 +1399,10 @@ header {
     top: var(--rocket-top);
 
     z-index: 6;
+
     pointer-events: none;
 }
+
 
 
 /* =========================================
@@ -973,17 +1412,39 @@ header {
 .contact {
     width: 100%;
 
-    margin: auto;
+    padding: 0 var(--gutter);
+}
+
+
+
+.contact .section-intro {
+    margin-bottom: 0;
+}
+
+
+
+/* « View my projects » et « Download my CV » */
+.contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+
+    margin: 26px auto 56px;
+}
+
+.contact-buttons .btn {
+    min-width: 210px;
+
+    padding: 11px 28px;
 }
 
 
 
 .container-form {
-    width: 75%;
+    width: min(100%, var(--form-max));
 
-    max-width: 1000px;
-
-    margin: auto;
+    margin: 0 auto;
 }
 
 
@@ -993,7 +1454,12 @@ header {
 
     display: flex;
 
-    margin-bottom: 45px;
+    margin-bottom: 38px;
+}
+
+/* Dernier groupe (bouton « Send ») : pas de marge inutile avant le footer */
+.form-groupe:last-child {
+    margin-bottom: 0;
 }
 
 
@@ -1001,13 +1467,13 @@ header {
 .form-groupe label {
     position: absolute;
 
-    padding: 10px 0;
+    padding: 9px 0;
 
     opacity: 0.5;
 
-    font-size: 1rem;
+    font-size: 0.85rem;
 
-    letter-spacing: 1px;
+    letter-spacing: 0.85px;
 }
 
 
@@ -1017,7 +1483,7 @@ header {
 
     width: 100%;
 
-    padding: 10px 0;
+    padding: 9px 0;
 
     border: none;
 
@@ -1025,36 +1491,47 @@ header {
 
     background: transparent;
 
-    border-bottom:
-        1px solid #aaa;
+    border-bottom: 1px solid #aaa;
 
     color: #666;
 
-    font-size: 1rem;
+    font-size: 0.85rem;
+}
+
+
+
+.form-groupe input:focus {
+    border-bottom-color: var(--accent);
 }
 
 
 
 textarea {
+    display: block;
+
     width: 100%;
 
-    height: 200px;
+    height: 170px;
 
-    border:
-        1px solid #aaa;
+    border: 1px solid #aaa;
 
     border-radius: 4px;
 
-    padding: 15px;
+    padding: 13px;
 
     resize: none;
 
     outline: none;
 
-    font-size: 1rem;
+    font-size: 0.85rem;
 
-    background-color:
-        var(--background-main);
+    background-color: var(--background-main);
+}
+
+
+
+textarea:focus {
+    border-color: var(--accent);
 }
 
 
@@ -1062,8 +1539,10 @@ textarea {
 textarea::placeholder {
     opacity: 0.5;
 
-    letter-spacing: 1px;
+    letter-spacing: 0.85px;
 }
+
+
 
 .contact-actions {
     width: 100%;
@@ -1073,30 +1552,19 @@ textarea::placeholder {
     align-items: center;
     justify-content: center;
 
-    gap: 18px;
-    margin-top: 35px;
+    gap: 10px;
+
+    margin-top: 26px;
 }
+
+
 
 #contact-submit {
-    margin: 0;
-}
+    padding: 9px 30px;
 
-#contact-status {
-    width: 100%;
-    margin: 0;
-    min-height: 1.4em;
-    text-align: center;
-}
+    font-size: 0.85rem;
 
-
-button {
-    margin: auto;
-
-    padding: 10px 35px;
-
-    font-size: 1rem;
-
-    letter-spacing: 1px;
+    letter-spacing: 0.85px;
 
     background: transparent;
 
@@ -1104,7 +1572,7 @@ button {
 
     cursor: pointer;
 
-    border-radius: 15px;
+    border-radius: 13px;
 
     transition:
         background 0.25s ease,
@@ -1113,7 +1581,7 @@ button {
 
 
 
-button:hover {
+#contact-submit:hover {
     background: #333;
 
     color: white;
@@ -1121,9 +1589,383 @@ button:hover {
 
 
 
+#contact-submit:disabled {
+    opacity: 0.6;
+
+    cursor: progress;
+}
+
+
+
+#contact-status {
+    width: 100%;
+
+    min-height: 1.2em;
+
+    font-size: 0.85rem;
+
+    text-align: center;
+}
+
+
+
 .form-groupe:focus-within label,
 .form-groupe.animation label {
     display: none;
+}
+
+
+
+/* =========================================
+   FICHES PROJET (fenêtres)
+   ========================================= */
+
+.project-dialog {
+    width: min(680px, calc(100% - 32px));
+    max-height: min(88vh, 860px);
+    max-height: min(88dvh, 860px);
+
+    margin: auto;
+    padding: 0;
+
+    border: 0;
+    border-radius: 22px;
+
+    background: var(--background-main);
+    color: var(--text-main);
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.project-dialog::backdrop {
+    background: rgba(30, 30, 30, 0.55);
+
+    backdrop-filter: blur(3px);
+}
+
+.project-dialog[open] {
+    animation: dialog-in 0.25s ease-out;
+}
+
+@keyframes dialog-in {
+
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+    }
+
+}
+
+/* La page ne défile pas derrière une fiche ouverte */
+body:has(.project-dialog[open]) {
+    overflow: hidden;
+}
+
+.dialog-inner {
+    padding: 28px clamp(18px, 4.5vw, 38px) 32px;
+}
+
+.dialog-header {
+    position: relative;
+
+    margin-bottom: 16px;
+    padding-right: 44px;
+}
+
+.dialog-header h3 {
+    margin-top: 5px;
+
+    font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+    font-size: clamp(1.15rem, 0.95rem + 1vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.dialog-close {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+
+    width: 44px;
+    height: 44px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.dialog-close:hover {
+    background: #e2e2e2;
+}
+
+.dialog-lead {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+}
+
+.project-dialog h4 {
+    margin: 24px 0 9px;
+
+    font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+    color: var(--accent);
+}
+
+.dialog-list {
+    display: grid;
+    gap: 7px;
+
+    padding-left: 1.2em;
+
+    font-size: 0.875rem;
+    line-height: 1.6;
+
+    color: var(--text-secondary);
+}
+
+.dialog-list li::marker {
+    color: var(--accent);
+}
+
+.project-dialog code {
+    padding: 1px 5px;
+
+    border-radius: 5px;
+
+    background: var(--background-section);
+
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+}
+
+
+/* Chiffres clés */
+
+.dialog-stats {
+    list-style: none;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.dialog-stats li {
+    flex: 1 1 110px;
+
+    padding: 12px 14px;
+
+    border-radius: 14px;
+
+    background: var(--background-section);
+
+    color: var(--text-secondary);
+
+    font-size: 0.8rem;
+}
+
+.dialog-stats strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.1;
+
+    color: var(--text-main);
+}
+
+
+/* Diagramme UML */
+
+.dialog-figure {
+    margin-top: 22px;
+}
+
+.dialog-figure img {
+    width: 100%;
+    height: auto;
+
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+.dialog-figure figcaption {
+    margin-top: 7px;
+
+    font-size: 0.78rem;
+
+    color: var(--text-muted);
+}
+
+.dialog-figure a {
+    color: inherit;
+}
+
+
+/* Extrait de routes (SoftDesk) */
+
+.dialog-code {
+    margin-top: 20px;
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    background: #2b2b2b;
+    color: #e8e8e8;
+
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+
+    overflow-x: auto;
+}
+
+.project-dialog .dialog-code code {
+    padding: 0;
+
+    background: none;
+
+    font-size: inherit;
+}
+
+
+/* Trajet d'un message (API de contact) */
+
+.dialog-flow {
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+
+    margin-top: 20px;
+}
+
+.dialog-flow li {
+    position: relative;
+
+    padding: 11px 8px;
+
+    border-radius: 12px;
+
+    background: var(--background-section);
+
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dialog-flow li span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 0.7rem;
+    font-weight: 400;
+
+    color: var(--text-muted);
+
+    overflow-wrap: anywhere;
+}
+
+.dialog-flow li + li::before {
+    content: "→";
+
+    position: absolute;
+    top: 50%;
+    left: -7px;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 14px;
+
+    color: var(--accent);
+}
+
+
+/* Tableau comparatif (AlgoInvest) */
+
+.dialog-table-wrap {
+    margin-top: 20px;
+
+    overflow-x: auto;
+}
+
+.dialog-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.dialog-table th,
+.dialog-table td {
+    padding: 9px 10px;
+
+    border-bottom: 1px solid #dddddd;
+
+    text-align: left;
+    vertical-align: top;
+}
+
+.dialog-table th:first-child {
+    padding-left: 0;
+}
+
+.dialog-table thead th {
+    font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+    font-weight: 600;
+}
+
+.dialog-table tbody th {
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.dialog-table td {
+    color: var(--text-secondary);
+}
+
+
+.project-dialog .project-stack {
+    margin-top: 22px;
+
+    font-size: 0.75rem;
+
+    color: var(--text-muted);
+}
+
+.dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 20px;
 }
 
 
@@ -1137,8 +1979,7 @@ footer {
 
     text-align: center;
 
-    padding:
-        50px 0 20px;
+    padding: 24px var(--gutter) 20px;
 
     opacity: 0.55;
 
@@ -1146,74 +1987,95 @@ footer {
 }
 
 
+
 /* =========================================
    RESPONSIVE
    ========================================= */
 
 /* =========================================
-   <= 1440px
-   Illustrations sous les titres,
-   skills empilées et projets en 2 colonnes
+   >= 1024px
+   Lignes assez longues pour un texte justifié
+   ========================================= */
+
+@media screen and (min-width: 1024px) {
+
+    .txt-about,
+    .txt-section {
+        text-align: justify;
+        text-align-last: left;
+    }
+
+    /* Même longueur de ligne que l'ancienne timeline */
+    .txt-section {
+        width: 95%;
+    }
+
+}
+
+
+
+/* =========================================
+   <= 1480px
+   Illustrations sous les titres
    ========================================= */
 
 @media screen and (max-width: 1480px) {
 
-    .txt-about {
-        width: min(1400px, 100%);
-        font-size: 1.1rem;
+    /* Centrées sous le titre : 180px (mobile) → 255px */
+    :root {
+        --side-illustration-size: clamp(180px, 25vw + 40px, 255px);
     }
 
     #astronaut,
     #rocket {
         position: relative;
 
+        top: auto;
         left: auto;
         right: auto;
-        top: auto;
 
-        width: var(--side-illustration-size);
-        height: var(--side-illustration-size);
+        flex-shrink: 0;
     }
 
-    .cont-exp-travail {
-        margin: -60px;
-        width: min(980px, 90%);
-    }
 
     /* Astronaute juste sous ABOUT */
 
     #astronaut {
-        margin:
-            -50px auto 35px;
+        margin: calc(var(--title-space) * -0.5) auto 30px;
     }
 
 
     /* Fusée juste sous JOURNEY */
 
     #rocket {
-        margin:
-            -15px auto 35px;
+        margin: 0 auto clamp(20px, 3vw, 30px);
     }
+
+
+    .timeline {
+        margin-top: 0;
+    }
+
 }
 
 
-@media screen and (max-width: 1280px) {
 
-    /* HOME */
-    .accueil {
-        padding-left: 24px;
-        padding-right: 24px;
-    }
+/* =========================================
+   <= 1280px
+   Hero sur trois lignes
+   ========================================= */
+
+@media screen and (max-width: 1280px) {
 
     .accueil h1 {
         width: 100%;
 
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 100px;
+
+        margin-top: min(100px, 12vh);
 
         font-size: clamp(2.4rem, 12vw, 3.6rem);
+
         line-height: 1.75;
     }
 
@@ -1231,71 +2093,54 @@ footer {
 
     .hero-description {
         width: min(680px, 100%);
+
         margin-inline: auto;
+
         padding-top: 50px;
+
         line-height: 1.75;
+
         font-size: 1rem;
     }
 
-    .txt-about {
-        width: min(1000px, 90%);
-    }
+}
 
 
-    /* Marges de sécurité */
-    .accueil,
-    .section-about,
-    .portfolio,
-    .experiences,
-    .contact {
-        padding-left: 28px;
-        padding-right: 28px;
-    }
 
+/* =========================================
+   <= 980px
+   Compétences empilées, projets en 2 colonnes
+   ========================================= */
+
+@media screen and (max-width: 980px) {
 
     /* PROJECTS : 2 colonnes × 3 lignes */
     .container-portfolio {
-        width: min(900px, 90%);
+        width: min(100%, 660px);
 
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
 
-        gap: 38px;
-    }
-
-    .cont-exp-travail {
-        margin: -40px;
-        width: min(980px, 90%);
+        gap: 28px;
     }
 
 
     /* CONTACT */
     .container-form {
-        width: min(900px, 90%);
+        width: min(100%, 660px);
     }
-}
 
 
-/* =========================================
-   <= 980px
-   Hero vertical + projets en 1 colonne
-   ========================================= */
-
-@media screen and (max-width: 980px) {
-
-
-    /* Skills verticales, centrées.
-       skills-02 conserve 2/3 de la largeur de skills-01. */
+    /* skills-02 conserve 2/3 de la largeur de skills-01 */
     .skills-animations {
-        width: min(560px, 88%);
+        width: min(100%, 410px);
 
-        margin: 60px auto 35px;
+        margin: 44px auto 28px;
 
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        gap: 60px;
+        gap: 40px;
     }
 
     #skills-01 {
@@ -1304,118 +2149,365 @@ footer {
 
     #skills-02 {
         width: 66.6667%;
+
+        /* Schémas empilés : plus de décalage */
+        transform: none;
     }
 
-
-    /* PROJECTS : 1 colonne × 6 lignes */
-    .container-portfolio {
-        width: min(420px, calc(100% - 40px));
-        max-width: 420px;
-
-        grid-template-columns: 1fr;
-
-        gap: 32px;
-    }
-
-    .cont-exp-travail {
-        margin: -60px;
-        width: min(820px, 94%);
-    }
-
-
-    /* CONTACT */
-    .container-form {
-        width: min(760px, calc(100% - 40px));
-    }
 }
 
 
+
 /* =========================================
-   <= 700px
-   Garde-fous mobile - affinage à venir
+   <= 900px
+   Menu déroulant (tablettes et mobiles) :
+   le menu complet serait trop serré
    ========================================= */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
+
+    :root {
+        --header-height: 60px;
+    }
+
+
+    /* HEADER */
 
     header {
-        padding: 8px 14px;
+        padding: 6px 16px;
     }
 
     .nav-bar {
         width: 100%;
-        gap: 10px;
+
+        min-height: 48px;
+
+        display: flex;
+
+        justify-content: space-between;
+    }
+
+    .logo-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+
+    /* Panneau déroulant sous le header */
+    .nav-panel {
+        position: absolute;
+
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 4px 16px 24px;
+
+        background-color: var(--background-header);
+
+        box-shadow: 0 16px 24px rgba(0, 0, 0, 0.15);
+
+        /* Fermé : invisible et hors du parcours clavier */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease,
+            visibility 0s linear 0.2s;
+    }
+
+    .nav-bar.is-open .nav-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
     }
 
     .nav-menu {
-        gap: 10px;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 0;
     }
 
+    /* Zones tactiles d'au moins 44px */
     .nav-menu a {
-        font-size: 0.9rem;
+        display: block;
+
+        padding: 12px 32px;
+
+        font-size: 1.15rem;
     }
 
     .nav-right {
-        gap: 10px;
+        gap: 8px;
     }
 
-    .social-icon {
-        width: 18px;
-        height: 18px;
+    .nav-right a {
+        padding: 10px;
+    }
+
+}
+
+
+
+/* =========================================
+   <= 760px
+   Atouts empilés
+   ========================================= */
+
+@media screen and (max-width: 760px) {
+
+    .strengths {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+
+        margin-top: 36px;
+    }
+
+}
+
+
+
+/* =========================================
+   <= 640px
+   Mobile : projets en 1 colonne,
+   timeline compacte
+   ========================================= */
+
+@media screen and (max-width: 640px) {
+
+    :root {
+        --timeline-dot: 40px;
+        --timeline-end: 36px;
+        --timeline-gap: 14px;
     }
 
 
-    h2 {
-        font-size: 35px;
-        letter-spacing: 6px;
-        margin: 55px 0;
+    /* ABOUT */
+
+    .txt-about {
+        font-size: 0.875rem;
     }
 
 
-    .nav-left {
+    /* PROJECTS : 1 colonne, cartes plus étroites */
+
+    .section-intro {
+        margin-bottom: 32px;
+    }
+
+    .container-portfolio {
+        width: min(100%, 300px);
+
+        grid-template-columns: 1fr;
+
+        gap: 26px;
+    }
+
+    .item {
+        min-height: 0;
+
+        border-radius: 22px;
+    }
+
+    .item p {
+        font-size: 12.5px;
+    }
+
+    .item .project-stack {
+        font-size: 11px;
+    }
+
+    .item .project-footer {
+        font-size: 12px;
+    }
+
+
+    /* JOURNEY : nom et date l'un sous l'autre */
+
+    .bloc {
+        padding-bottom: 28px;
+    }
+
+    .titre-section-bloc {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        row-gap: 2px;
+
+        padding-top: 0;
+    }
+
+    .journey-separator {
         display: none;
     }
 
+    .journey-name {
+        font-size: 17px;
+    }
 
-    .accueil,
-    .section-about,
-    .portfolio,
-    .experiences,
-    .contact {
-        width: 100%;
-        padding-left: 18px;
-        padding-right: 18px;
+    .journey-date {
+        font-size: 13px;
+    }
+
+    .journey-role {
+        margin-top: 7px;
+
+        font-size: 14px;
+    }
+
+    .txt-section {
+        font-size: 13.5px;
     }
 
 
-    .txt-about {
-        width: 95%;
-        max-width: 100%;
-        font-size: 0.95rem;
+    /* CONTACT : boutons l'un sous l'autre */
 
-        text-align: justify;
-        text-align-last: left;
+    .contact-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+
+        margin-bottom: 44px;
+    }
+
+    .contact-buttons .btn {
+        width: min(100%, 240px);
+        min-width: 0;
     }
 
 
-    .skills-animations {
-        width: min(500px, 96%);
-        margin-top: 45px;
-        gap: 24px;
+    /* CONTACT : 16px minimum dans les champs, sinon iOS zoome au focus */
+
+    .form-groupe label,
+    .form-groupe input,
+    textarea {
+        font-size: 1rem;
     }
 
 
-    .container-portfolio {
-        width: min(400px, 100%);
+    /* FICHES : trajet du message et tableau adaptés */
+
+    .dialog-flow {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
     }
 
+    .dialog-flow li + li::before {
+        content: "↓";
 
-    .cont-exp-travail {
-        width: 100%;
-        margin: 0 auto;
+        top: -9px;
+        left: 50%;
     }
 
-
-    .container-form {
-        width: 100%;
+    .dialog-table {
+        font-size: 0.75rem;
     }
+
+    .dialog-table th,
+    .dialog-table td {
+        padding: 8px 6px;
+    }
+
+    .dialog-table tbody th {
+        width: 26%;
+
+        white-space: normal;
+    }
+
+}
+
+
+
+/* =========================================
+   ACCESSIBILITÉ : MOUVEMENT RÉDUIT
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .line-1,
+    .line-2,
+    .line-3,
+    .hero-description,
+    .hero-signature {
+        animation: none;
+
+        opacity: 1;
+
+        transform: none;
+    }
+
+    .item,
+    .boule-ico,
+    .nav-panel,
+    .nav-toggle-bar,
+    .nav-toggle-bar::before,
+    .nav-toggle-bar::after {
+        transition: none;
+    }
+
+    .project-dialog[open] {
+        animation: none;
+    }
+
+}
+
+
+
+/* =========================================
+   SÉLECTEUR DE LANGUE (FR / EN)
+   ========================================= */
+
+.lang-switch {
+    padding: 3px 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-decoration: none;
+
+    transition: opacity 0.25s ease;
+}
+
+.lang-switch:hover {
+    opacity: 0.55;
+}
+
+/* Dans le menu déroulant : même hauteur que les icônes */
+@media screen and (max-width: 900px) {
+
+    .nav-right a.lang-switch {
+        padding: 4px 9px;
+
+        margin-right: 6px;
+    }
+
 }

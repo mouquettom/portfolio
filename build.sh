@@ -8,6 +8,10 @@ mkdir -p public
 cp index.html public/
 cp style.css public/
 cp script.js public/
+cp robots.txt sitemap.xml public/
+
+# Version française
+cp -R fr public/
 
 cp -R ressources public/
 

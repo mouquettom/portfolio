@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Portfolio</title>
 
+    <!-- Langues : cette page (anglais) et sa traduction française -->
+    <link rel="canonical" href="https://tommouquet.com/">
+    <link rel="alternate" hreflang="en" href="https://tommouquet.com/">
+    <link rel="alternate" hreflang="fr" href="https://tommouquet.com/fr/">
+    <link rel="alternate" hreflang="x-default" href="https://tommouquet.com/">
+
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=6">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap"
@@ -23,7 +32,7 @@
     ></script>
 
     <!-- JavaScript -->
-    <script src="script.js?v=1" defer></script>
+    <script src="script.js?v=5" defer></script>
 </head>
 
 
@@ -35,17 +44,17 @@
 
     <header>
 
-        <nav class="nav-bar">
+        <nav class="nav-bar" aria-label="Main">
 
             <!-- Logo -->
             <div class="nav-left">
 
                 <div class="logo-circle">
 
-                    <a href="">
+                    <a href="#accueil">
                         <img
                             src="ressources/profil-v2.png"
-                            alt="Signature"
+                            alt="Tom Mouquet – back to top"
                         >
                     </a>
 
@@ -54,68 +63,99 @@
             </div>
 
 
-            <!-- Navigation -->
-            <ul class="nav-menu">
-
-                <li>
-                    <a href="#about">about</a>
-                </li>
-
-                <li>
-                    <a href="#projects">projects</a>
-                </li>
-
-                <li>
-                    <a href="#exp">journey</a>
-                </li>
-
-                <li>
-                    <a href="#contact">contact</a>
-                </li>
-
-            </ul>
+            <!-- Bouton du menu (mobile uniquement) -->
+            <button
+                class="nav-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="nav-panel"
+                aria-label="Open menu"
+            >
+                <span class="nav-toggle-bar" aria-hidden="true"></span>
+            </button>
 
 
-            <!-- Réseaux -->
-            <div class="nav-right">
+            <!--
+                Desktop : le menu et les réseaux s'affichent dans la barre.
+                Mobile : ils passent dans un panneau déroulant.
+            -->
+            <div class="nav-panel" id="nav-panel">
 
-                <a
-                    href="https://www.linkedin.com/in/tom-mouquet-dev/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <img
-                        src="ressources/logo-linkedin.png"
-                        alt="LinkedIn"
-                        class="social-icon"
+                <!-- Navigation -->
+                <ul class="nav-menu">
+
+                    <li>
+                        <a href="#about">about</a>
+                    </li>
+
+                    <li>
+                        <a href="#projects">projects</a>
+                    </li>
+
+                    <li>
+                        <a href="#exp">journey</a>
+                    </li>
+
+                    <li>
+                        <a href="#contact">contact</a>
+                    </li>
+
+                </ul>
+
+
+                <!-- Langue + réseaux -->
+                <div class="nav-right">
+
+                    <a
+                        class="lang-switch"
+                        href="fr/"
+                        hreflang="fr"
+                        lang="fr"
+                        aria-label="Version française"
                     >
-                </a>
+                        FR
+                    </a>
 
 
-                <a
-                    href="https://github.com/mouquettom"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <img
-                        src="ressources/logo-github.png"
-                        alt="GitHub"
-                        class="social-icon"
+                    <a
+                        href="https://www.linkedin.com/in/tom-mouquet-dev/"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                </a>
+                        <img
+                            src="ressources/logo-linkedin.png"
+                            alt="LinkedIn"
+                            class="social-icon"
+                        >
+                    </a>
 
 
-                <a
-                    href="https://www.instagram.com/tom_mouquet"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <img
-                        src="ressources/logo-instagram.png"
-                        alt="Instagram"
-                        class="social-icon"
+                    <a
+                        href="https://github.com/mouquettom"
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
-                </a>
+                        <img
+                            src="ressources/logo-github.png"
+                            alt="GitHub"
+                            class="social-icon"
+                        >
+                    </a>
+
+
+                    <a
+                        href="https://www.instagram.com/tom_mouquet"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="ressources/logo-instagram.png"
+                            alt="Instagram"
+                            class="social-icon"
+                        >
+                    </a>
+
+                </div>
 
             </div>
 
@@ -136,7 +176,7 @@
             id="accueil"
         >
 
-            <canvas id="particles-canvas"></canvas>
+            <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
 
             <h1>
@@ -162,642 +202,804 @@
                 reliable digital products.
             </p>
 
+
+            <p class="hero-signature">
+                <span>Tom Mouquet</span> · <span>Python back-end developer</span>
+            </p>
+
         </section>
 
+
+
         <!-- =========================================
-             RESIZE ALL SECTIONS
+             ABOUT
              ========================================= -->
 
-        <div class="desktop-scaled-content">
+        <section class="section-about" id="about">
 
-            <!-- =========================================
-                 ABOUT
-                 ========================================= -->
+            <h2 class="title-about">About</h2>
 
-            <section class="section-about" id="about">
+            <div id="astronaut" aria-hidden="true"></div>
 
-                <h2 class="title-about">
-                    About
-                </h2>
+            <div class="txt-about">
+
+                <p>
+                    I'm a Python back-end developer holding the French
+                    RNCP level 6 qualification “Python Application Developer”
+                    (OpenClassrooms, bachelor's level). I earned it alongside my
+                    job as a 2D/3D motion designer at Cegedim / C-Media, where
+                    I have been creating content for pharmaceutical and
+                    cosmetics brands since 2022.
+                </p>
+
+                <p>
+                    Today, I build REST APIs and back-end applications with
+                    Django, Django REST Framework, FastAPI, SQLAlchemy and
+                    PostgreSQL. What drives me: a readable architecture,
+                    business rules backed by tests, and code a teammate can
+                    pick up without me.
+                </p>
+
+            </div>
 
 
-                <!--
-                    L'astronaute reste totalement indépendant
-                    du reste du layout.
-                -->
-                <div id="astronaut" aria-hidden="true"></div>
+            <!-- What I bring: three claims, each one verifiable in a project -->
+            <ul class="strengths">
 
-
-                <!-- Texte de présentation -->
-
-                <div class="txt-about">
-
+                <li class="strength">
+                    <h3>Tested code</h3>
                     <p>
-                        I'm a Python back-end developer with a background
-                        in 2D and 3D motion design. After several years
-                        working on digital content for the pharmaceutical
-                        and cosmetics industries, I decided to turn my
-                        interest in programming into a new professional path.
+                        481 tests and 95% coverage on my Epic Events CRM:
+                        unit, integration and functional tests.
                     </p>
+                </li>
 
-                    <br>
-
-                    <p class="description">
-
-                        Today, I build back-end applications and REST APIs
-                        using Python, Django, Flask, SQLAlchemy and PostgreSQL.
-
-                        I enjoy designing clean architectures, solving complex
-                        problems and turning ideas into reliable products —
-                        while keeping the creative mindset I developed
-                        throughout my career in design.
-
+                <li class="strength">
+                    <h3>Security from day one</h3>
+                    <p>
+                        JWT authentication, hashed passwords, role-based
+                        permissions and strict input validation.
                     </p>
+                </li>
+
+                <li class="strength">
+                    <h3>A delivery mindset</h3>
+                    <p>
+                        In motion design, I take projects from brief to delivery.
+                        I bring the same rigour to code: continuous integration,
+                        Docker, automated deployment.
+                    </p>
+                </li>
+
+            </ul>
 
 
-                </div>
+            <!-- Animated skills map -->
+            <div class="skills-animations" aria-hidden="true">
+                <div id="skills-01"></div>
+                <div id="skills-02"></div>
+            </div>
+
+            <!-- Same content as text: for screen readers, search engines and CV parsers -->
+            <ul class="sr-only">
+                <li>Python</li>
+                <li>Django and Django REST Framework</li>
+                <li>FastAPI</li>
+                <li>Flask</li>
+                <li>REST APIs</li>
+                <li>SQLAlchemy</li>
+                <li>PostgreSQL</li>
+                <li>Git and testing (Pytest)</li>
+                <li>Docker</li>
+                <li>CI/CD (GitHub Actions)</li>
+                <li>Gunicorn</li>
+                <li>Render</li>
+            </ul>
+
+        </section>
 
 
-                <!-- Animation Lottie centrée sous le schéma des compétences -->
-                <div class="skills-animations" aria-hidden="true">
-                    <div id="skills-01"></div>
-                    <div id="skills-02"></div>
-                </div>
 
-            </section>
+        <!-- =========================================
+             PROJECTS
+             Each card opens a detailed case study (see the <dialog> elements below).
+             ========================================= -->
+
+        <section class="portfolio" id="projects">
+
+            <h2 class="title-portfolio">Projects</h2>
+
+            <p class="section-intro">
+                Five projects from my training and one personal project in
+                production. Open a card for the technical details.
+            </p>
+
+            <div class="container-portfolio">
+
+                <!-- Epic Events -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/crm.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind">OpenClassrooms project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="epic-events" aria-haspopup="dialog">Epic Events</button>
+                        </h3>
+                        <p>Secure CRM back-end: three roles, contracts, events and 481 tests.</p>
+                        <p class="project-stack">Python · SQLAlchemy · PostgreSQL · Alembic · Pytest · Sentry</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/epic-events-crm" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of Epic Events on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+                <!-- SoftDesk API -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/api.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind">OpenClassrooms project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="softdesk-api" aria-haspopup="dialog">SoftDesk API</button>
+                        </h3>
+                        <p>Issue-tracking REST API with JWT authentication and custom permissions.</p>
+                        <p class="project-stack">Python · Django REST Framework · Simple JWT · Nested routes</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/softdesk-api" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of SoftDesk API on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+                <!-- LIT-Revu -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/socialmedia.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind">OpenClassrooms project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="lit-revu" aria-haspopup="dialog">LIT-Revu</button>
+                        </h3>
+                        <p>Django web app: book reviews, follows and a personalised feed.</p>
+                        <p class="project-stack">Python · Django · SQLite · HTML/CSS · JavaScript</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/lit-revu" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of LIT-Revu on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+                <!-- AlgoInvest & Trade -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/strategy.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind">OpenClassrooms project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="algoinvest" aria-haspopup="dialog">AlgoInvest &amp; Trade</button>
+                        </h3>
+                        <p>Stock portfolio optimisation: O(2ⁿ) brute force versus a greedy algorithm.</p>
+                        <p class="project-stack">Python · pandas · Algorithms · Complexity</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/algoinvest" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of AlgoInvest &amp; Trade on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Chess Tournament -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/chess.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind">OpenClassrooms project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="chess-tournament" aria-haspopup="dialog">Chess Tournament</button>
+                        </h3>
+                        <p>Offline chess tournament manager with an MVC architecture and JSON storage.</p>
+                        <p class="project-stack">Python · OOP · MVC · JSON</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/chess-tournament-manager" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of Chess Tournament on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Contact API (this site) -->
+                <article class="item">
+                    <div class="container-image-porftolio">
+                        <img src="ressources/porftolio.jpg" alt="">
+                    </div>
+                    <div class="item-body">
+                        <p class="project-kind project-kind-personal">Personal project</p>
+                        <h3>
+                            <button class="project-open" type="button" data-project="contact-api" aria-haspopup="dialog">Contact API</button>
+                        </h3>
+                        <p>The FastAPI service behind this site's contact form, shipped through a CI/CD pipeline.</p>
+                        <p class="project-stack">FastAPI · Pydantic · Docker · GitHub Actions · Playwright</p>
+                        <p class="project-footer">
+                            <span class="project-more" aria-hidden="true">See details</span>
+                            <a class="project-code" href="https://github.com/mouquettom/portfolio" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> of the contact API on GitHub</span></a>
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
 
 
 
-            <!-- =========================================
-                 PROJECTS
-                 ========================================= -->
+        <!-- =========================================
+             JOURNEY
+             One step = one logo + its text, on the same row.
+             ========================================= -->
 
-            <section
-                class="portfolio"
-                id="projects"
-            >
+        <section class="experiences" id="exp">
 
-                <h2 class="title-portfolio">
-                    Projects
-                </h2>
+            <h2 class="titre-travail-exp">Journey</h2>
+
+            <div id="rocket" aria-hidden="true"></div>
+
+            <ol class="timeline flex-cont-bloc-exp">
+
+                <!-- OpenClassrooms -->
+                <li class="bloc">
+                    <a class="boule-ico" href="https://openclassrooms.com/" target="_blank" rel="noopener noreferrer" aria-label="OpenClassrooms website">
+                        <img src="ressources/openclassrooms.png" alt="">
+                    </a>
+                    <div class="bloc-content">
+                        <p class="titre-section-bloc">
+                            <span class="journey-name">OpenClassrooms</span>
+                            <span class="journey-separator" aria-hidden="true">|</span>
+                            <span class="journey-date">2024 - 2026</span>
+                        </p>
+                        <p class="journey-role">RNCP level 6 · Python Application Developer</p>
+                        <p class="txt-section">
+                            Bachelor's-level qualification earned alongside my job:
+                            Python, object-oriented programming, Django, Django REST
+                            Framework, SQL databases, testing, security and algorithms.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- Cegedim / C-Media -->
+                <li class="bloc">
+                    <a class="boule-ico" href="https://www.cegedim-media.fr/" target="_blank" rel="noopener noreferrer" aria-label="Cegedim Media website">
+                        <img src="ressources/cegedim.png" alt="">
+                    </a>
+                    <div class="bloc-content">
+                        <p class="titre-section-bloc">
+                            <span class="journey-name">Cegedim / C-Media</span>
+                            <span class="journey-separator" aria-hidden="true">|</span>
+                            <span class="journey-date">2022 - today</span>
+                        </p>
+                        <p class="journey-role">2D/3D Motion Designer</p>
+                        <p class="txt-section">
+                            Creating 2D/3D advertising content for pharmaceutical
+                            and cosmetics brands, from concept and storyboarding
+                            to final delivery.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- École Multimédia -->
+                <li class="bloc">
+                    <a class="boule-ico" href="https://www.ecole-multimedia.com/" target="_blank" rel="noopener noreferrer" aria-label="École Multimédia website">
+                        <img src="ressources/ecole-multimedia.png" alt="">
+                    </a>
+                    <div class="bloc-content">
+                        <p class="titre-section-bloc">
+                            <span class="journey-name">École Multimédia</span>
+                            <span class="journey-separator" aria-hidden="true">|</span>
+                            <span class="journey-date">2021 - 2022</span>
+                        </p>
+                        <p class="journey-role">Bac+4 · Multimedia Art</p>
+                        <p class="txt-section">
+                            Advanced studies in digital content creation, with a focus
+                            on motion design, 3D production and visual communication.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- Sup de Pub -->
+                <li class="bloc">
+                    <a class="boule-ico" href="https://www.supdepub.com/" target="_blank" rel="noopener noreferrer" aria-label="Sup de Pub website">
+                        <img src="ressources/supdepub.png" alt="">
+                    </a>
+                    <div class="bloc-content">
+                        <p class="titre-section-bloc">
+                            <span class="journey-name">Sup de Pub</span>
+                            <span class="journey-separator" aria-hidden="true">|</span>
+                            <span class="journey-date">2014 - 2017</span>
+                        </p>
+                        <p class="journey-role">Licence · Art Direction</p>
+                        <p class="txt-section">
+                            Training in visual arts and art direction, with a focus on
+                            branding, graphic design and visual communication.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- End of the timeline -->
+                <li class="timeline-end" aria-hidden="true">
+                    <div class="plane">
+                        <img src="ressources/plane.png" alt="">
+                    </div>
+                </li>
+
+            </ol>
+
+        </section>
 
 
-                <div class="container-portfolio">
+
+        <!-- =========================================
+             CONTACT
+             ========================================= -->
+
+        <section class="contact" id="contact">
+
+            <h2>Contact</h2>
 
 
-                    <!-- Epic Events -->
+            <p class="section-intro">
+                Interested in working together? Get in touch using the form below,
+                explore my projects on GitHub, or download my CV.
+            </p>
 
-                    <article class="item">
+            <div class="contact-buttons">
 
-                        <a
-                            href="https://github.com/mouquettom/epic-events-crm"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
+                <a
+                    class="btn btn-primary"
+                    href="https://github.com/mouquettom"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    View my projects
+                </a>
+
+                <a
+                    class="btn"
+                    href="ressources/Tom_Mouquet_CV.pdf"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Download my CV
+                </a>
+
+            </div>
+
+
+            <div class="container-form">
+
+                <form id="contact-form">
+
+                    <div class="form-groupe">
+
+                        <label for="first-name">
+                            First name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="first-name"
+                            name="first-name"
+                            maxlength="50"
+                            autocomplete="given-name"
+                            required
                         >
 
-                            <div class="container-image-porftolio">
+                    </div>
 
-                                <img
-                                    src="ressources/crm.jpg"
-                                    alt="Epic Events"
-                                >
+                    <div class="form-groupe">
 
-                            </div>
+                        <label for="last-name">
+                            Last name *
+                        </label>
 
-
-                            <h3>
-                                Epic Events
-                            </h3>
-
-
-                            <p>
-                                CRM back-end built with Python, SQLAlchemy and PostgreSQL.
-                            </p>
-
-
-                            <p class="project-stack">
-                                Python · SQLA · PostgreSQL · Pytest · Sentry
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-
-                    <!-- Projet 2 -->
-
-                    <article class="item">
-
-                        <a
-                            href="https://github.com/mouquettom/softdesk-api"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
+                        <input
+                            type="text"
+                            id="last-name"
+                            name="last-name"
+                            maxlength="50"
+                            autocomplete="family-name"
+                            required
                         >
 
-                            <div class="container-image-porftolio">
+                    </div>
 
-                                <img
-                                    src="ressources/api.jpg"
-                                    alt="Projet Python"
-                                >
+                    <div class="form-groupe">
 
-                            </div>
+                        <label for="email">
+                            Email *
+                        </label>
 
-
-                            <h3>
-                                SoftDesk API
-                            </h3>
-
-
-                            <p>
-                                REST API for collaborative project management.
-                            </p>
-
-                            <p class="project-stack">
-                                Django REST Framework · Python · JWT · Pytest
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-
-                    <!-- Projet 3 -->
-
-                    <article class="item">
-
-                        <a
-                            href="https://github.com/mouquettom/lit-revu"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            maxlength="254"
+                            autocomplete="email"
+                            required
                         >
 
-                            <div class="container-image-porftolio">
+                    </div>
 
-                                <img
-                                    src="ressources/socialmedia.jpg"
-                                    alt="Projet Python"
-                                >
+                    <div class="form-groupe">
 
-                            </div>
+                        <label for="company">
+                            Company
+                        </label>
 
-
-                            <h3>
-                                LIT-Revu
-                            </h3>
-
-
-                            <p>
-                                Django social application.
-                            </p>
-                            <br>
-                            <p class="project-stack">
-                                Django · Python · MVC · HTML/CSS · JavaScript
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-
-                    <!-- Projet 4 -->
-
-                    <article class="item">
-
-                        <a
-                            href="https://github.com/mouquettom/algoinvest"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            maxlength="100"
+                            autocomplete="organization"
                         >
 
-                            <div class="container-image-porftolio">
+                    </div>
 
-                                <img
-                                    src="ressources/strategy.jpg"
-                                    alt="Projet Python"
-                                >
+                    <div class="form-groupe">
 
-                            </div>
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder="Your message"
+                            aria-label="Your message"
+                            maxlength="3000"
+                            required
+                        ></textarea>
 
+                    </div>
 
-                            <h3>
-                                AlgoInvest & Trade
-                            </h3>
+                    <div class="form-groupe">
 
-
-                            <p>
-                                Investisment optimization application.
-                            </p>
-                            <br>
-                            <p class="project-stack">
-                                Python · Algorithms · CSV · Big O
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-
-                    <!-- Projet 5 -->
-
-                    <article class="item">
-
-                        <a
-                            href="https://github.com/mouquettom/chess-tournament-manager"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
-                        >
-
-                            <div class="container-image-porftolio">
-
-                                <img
-                                    src="ressources/chess.jpg"
-                                    alt="Projet Python"
-                                >
-
-                            </div>
-
-
-                            <h3>
-                                Chess Tournament
-                            </h3>
-
-
-                            <p>
-                                Offline tournament management application.
-                            </p>
-
-                            <p class="project-stack">
-                                Python · Algorithms · CSV · Big O
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-
-                    <!-- Projet 6 -->
-
-                    <article class="item">
-
-                        <a
-                            href="https://github.com/mouquettom/portfolio"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="project-link"
-                        >
-
-                            <div class="container-image-porftolio">
-
-                                <img
-                                    src="ressources/porftolio.jpg"
-                                    alt="Projet Python"
-                                >
-
-                            </div>
-
-
-                            <h3>
-                                Portfolio
-                            </h3>
-
-
-                            <p>
-                                Personal porftolio with animations
-                                and interactive visual experiences.
-                            </p>
-
-                            <p class="project-stack">
-                                HTML/CSS · JavaScript · Docker · CI/CD · Render
-                            </p>
-
-                        </a>
-
-                    </article>
-
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 JOURNEY
-                 ========================================= -->
-
-            <section
-                class="experiences"
-                id="exp"
-            >
-
-                <h2 class="titre-travail-exp">
-                    Journey
-                </h2>
-
-
-                <!-- Fusée indépendante du layout -->
-
-                <div id="rocket" aria-hidden="true"></div>
-
-
-                <div class="cont-exp-travail">
-
-
-                    <!-- Ligne verticale -->
-
-                    <div class="barre-verticale">
-
-
-                        <a
-                            class="boule-ico"
-                            href="https://openclassrooms.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Visit OpenClassrooms website"
-                        >
-
-                            <img
-                                src="ressources/openclassrooms.png"
-                                alt="OpenClassrooms"
-                            >
-                        </a>
-
-
-                        <a
-                            class="boule-ico"
-                            href="https://www.cegedim-media.fr/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Visit Cegedim website"
-                        >
-                            <img
-                                src="ressources/cegedim.png"
-                                alt="Cegedim / C-Media"
-                            >
-                        </a>
-
-
-                        <a
-                            class="boule-ico"
-                            href="https://www.ecole-multimedia.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Visit École Multimédia website"
-                        >
-                            <img
-                                src="ressources/ecole-multimedia.png"
-                                alt="École Multimédia"
-                            >
-                        </a>
-
-
-                        <a
-                            class="boule-ico"
-                            href="https://www.supdepub.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Visit Sup de Pub website"
-                        >
-                            <img
-                                src="ressources/supdepub.png"
-                                alt="Sup de Pub"
-                            >
-                        </a>
-
-
-                        <div class="plane">
-
-                            <img
-                                src="ressources/plane.png"
-                                alt="Start"
-                            >
-
+                        <div class="contact-actions">
+                            <button type="submit" id="contact-submit">Send</button>
+                            <p id="contact-status" aria-live="polite"></p>
                         </div>
-
 
                     </div>
 
 
+                </form>
 
-                    <!-- Expériences -->
+            </div>
 
-                    <div class="flex-cont-bloc-exp">
-
-                        <!-- OpenClassrooms -->
-                        <div class="bloc">
-
-                            <p class="titre-section-bloc">
-                                <span class="journey-name">OpenClassrooms</span>
-                                <span class="journey-separator">|</span>
-                                <span class="journey-date">2024 - 2026</span>
-                            </p>
-
-                            <p class="journey-role">
-                                Python Developer
-                            </p>
-
-                            <p class="txt-section">
-                                Back-end development program focused on Python,
-                                Django, Flask, APIs, databases, testing and
-                                software architecture.
-                            </p>
-
-                        </div>
-
-
-                        <!-- Cegedim / C-Media -->
-                        <div class="bloc">
-
-                            <p class="titre-section-bloc">
-                                <span class="journey-name">Cegedim / C-Media</span>
-                                <span class="journey-separator">|</span>
-                                <span class="journey-date">2022 - today</span>
-                            </p>
-
-                            <p class="journey-role">
-                                Motion Designer 2D/3D
-                            </p>
-
-                            <p class="txt-section">
-                                Creating 2D/3D advertising content for pharmaceutical
-                                and cosmetics brands, from concept and storyboarding
-                                to final delivery.
-                            </p>
-
-                        </div>
-
-
-                        <!-- École Multimédia -->
-                        <div class="bloc">
-
-                            <p class="titre-section-bloc">
-                                <span class="journey-name">École Multimédia</span>
-                                <span class="journey-separator">|</span>
-                                <span class="journey-date">2021 - 2022</span>
-                            </p>
-
-                            <p class="journey-role">
-                                Bac+4 · Multimedia Art
-                            </p>
-
-                            <p class="txt-section">
-                                Advanced studies in digital content creation,
-                                with a focus on motion design, 3D production and
-                                visual communication.
-                            </p>
-
-                        </div>
-
-
-                        <!-- Sup de Pub -->
-                        <div class="bloc">
-
-                            <p class="titre-section-bloc">
-                                <span class="journey-name">Sup de Pub</span>
-                                <span class="journey-separator">|</span>
-                                <span class="journey-date">2014 - 2017</span>
-                            </p>
-
-                            <p class="journey-role">
-                                Licence · Art Direction
-                            </p>
-
-                            <p class="txt-section">
-                                Training in visual arts and art direction,
-                                with a focus on branding, graphic design and visual communication.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 CONTACT
-                 ========================================= -->
-
-            <section class="contact" id="contact">
-
-                <h2>Contact</h2>
-
-                <div class="container-form">
-
-                    <form id="contact-form">
-
-                        <div class="form-groupe">
-
-                            <label for="first-name">
-                                First name *
-                            </label>
-
-                            <input
-                                type="text"
-                                id="first-name"
-                                name="first-name"
-                                maxlength="50"
-                                autocomplete="given-name"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-groupe">
-
-                            <label for="last-name">
-                                Last name *
-                            </label>
-
-                            <input
-                                type="text"
-                                id="last-name"
-                                name="last-name"
-                                maxlength="50"
-                                autocomplete="family-name"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-groupe">
-
-                            <label for="email">
-                                Email *
-                            </label>
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                maxlength="254"
-                                autocomplete="email"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-groupe">
-
-                            <label for="company">
-                                Company
-                            </label>
-
-                            <input
-                                type="text"
-                                id="company"
-                                name="company"
-                                maxlength="100"
-                                autocomplete="organization"
-                            >
-
-                        </div>
-
-                        <div class="form-groupe">
-
-                            <textarea
-                                id="message"
-                                name="message"
-                                placeholder="Your message"
-                                maxlength="3000"
-                                required
-                            ></textarea>
-
-                        </div>
-
-                        <div class="form-groupe">
-
-                            <div class="contact-actions">
-                                <button type="submit" id="contact-submit">Send</button>
-                                <p id="contact-status" aria-live="polite"></p>
-                            </div>
-
-                        </div>
-
-
-                    </form>
-
-                </div>
-
-            </section>
-
-        </div>
+        </section>
 
     </main>
+
+
+    <!-- =========================================
+         CASE STUDIES
+         Opened by the cards. Direct link:
+         tommouquet.com/#epic-events
+         ========================================= -->
+
+    <!-- Epic Events -->
+    <dialog class="project-dialog" id="epic-events" aria-labelledby="epic-events-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">OpenClassrooms project</p>
+                <h3 id="epic-events-title">Epic Events — secure CRM back-end</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                A command-line CRM for a fictional event company: clients, contracts
+                and events, shared by three departments (management, sales, support)
+                with different access rights.
+            </p>
+
+            <ul class="dialog-stats">
+                <li><strong>481</strong> tests</li>
+                <li><strong>95%</strong> coverage</li>
+                <li><strong>3</strong> roles</li>
+            </ul>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>A layered architecture: controllers (console interface), services (business rules and permissions), repositories (SQLAlchemy queries) and models.</li>
+                <li>Email and password authentication: bcrypt hashing and an HS256-signed JWT that expires after 60 minutes.</li>
+                <li>Role-based permissions enforced in the service layer, independently of the menus shown.</li>
+                <li>The business rules from the specification: an event can only exist for a signed contract, the amount due can be neither negative nor higher than the total, an employee cannot delete their own account.</li>
+            </ul>
+
+            <figure class="dialog-figure">
+                <img src="ressources/projects/epic-events-uml.png" alt="UML diagram: an employee manages clients, contracts and events; a client signs contracts; a contract covers events." loading="lazy" width="1400" height="815">
+                <figcaption>
+                    Data model.
+                    <a href="https://github.com/mouquettom/epic-events-crm/blob/main/docs/Epic%20Events%20CRM%20-%20Diagramme%20UML.png" target="_blank" rel="noopener noreferrer">View full size</a>
+                </figcaption>
+            </figure>
+
+            <h4>Technical highlights</h4>
+            <ul class="dialog-list">
+                <li>PostgreSQL schema versioned with Alembic migrations.</li>
+                <li>Sentry monitoring: business errors are shown to the user, only unexpected errors are reported, without personal data.</li>
+                <li>Unit, integration and functional tests with pytest and test-data factories.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Expose the business logic through a REST API.</li>
+                <li>Run the test suite automatically in continuous integration.</li>
+            </ul>
+
+            <p class="project-stack">Python · SQLAlchemy 2 · PostgreSQL · Alembic · PyJWT · bcrypt · Sentry · Pytest</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/epic-events-crm" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+            </div>
+
+        </div>
+    </dialog>
+
+
+    <!-- SoftDesk API -->
+    <dialog class="project-dialog" id="softdesk-api" aria-labelledby="softdesk-api-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">OpenClassrooms project</p>
+                <h3 id="softdesk-api-title">SoftDesk API — secure REST API</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                The API of a B2B issue-tracking application: users create projects,
+                add contributors, open issues and comment on them.
+            </p>
+
+            <pre class="dialog-code" aria-label="Sample API routes"><code>POST  /api/token/access/
+GET   /api/projects/
+POST  /api/projects/{id}/contributors/
+GET   /api/projects/{id}/issues/
+POST  /api/projects/{id}/issues/{id}/comments/</code></pre>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>A REST API with Django REST Framework and nested routes: projects, then issues, then comments.</li>
+                <li>JWT authentication (Simple JWT): 30-minute access tokens, one-day refresh tokens.</li>
+                <li>Three custom permissions: only contributors can access a project, only the author can edit or delete their content, only a project's author can manage its contributors.</li>
+            </ul>
+
+            <h4>Technical highlights</h4>
+            <ul class="dialog-list">
+                <li>A custom user model designed with GDPR in mind: minimum age of 15, explicit consent (to be contacted, to share data), account deletion by the user.</li>
+                <li>Separate serializers for public and personal profiles: the API never exposes another user's email or age.</li>
+                <li>An issue can only be assigned to a project contributor; write-only hashed passwords; UUIDs for comments; pagination by 20.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Cover the permissions with an automated test suite.</li>
+            </ul>
+
+            <p class="project-stack">Python · Django · Django REST Framework · Simple JWT · drf-nested-routers · SQLite</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/softdesk-api" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+            </div>
+
+        </div>
+    </dialog>
+
+
+    <!-- LIT-Revu -->
+    <dialog class="project-dialog" id="lit-revu" aria-labelledby="lit-revu-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">OpenClassrooms project</p>
+                <h3 id="lit-revu-title">LIT-Revu — Django web application</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                A community platform for book and article reviews: members request
+                a review by posting a ticket, others answer it, and everyone follows
+                the people they are interested in.
+            </p>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>Sign-up and login; creating and editing tickets (with an image) and reviews, or both in a single step.</li>
+                <li>A follow system and a personalised feed that mixes the tickets and reviews of followed users, sorted by date.</li>
+                <li>User search with JavaScript autocomplete.</li>
+            </ul>
+
+            <h4>Technical highlights</h4>
+            <ul class="dialog-list">
+                <li>Database uniqueness constraints: one review per user and per ticket, no duplicate follows.</li>
+                <li>Feed queries optimised with <code>select_related</code> to avoid N+1 queries, and an index on the creation date.</li>
+                <li>The image file is deleted along with its ticket.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Add automated tests for the feed and for edit permissions.</li>
+            </ul>
+
+            <p class="project-stack">Python · Django · SQLite · HTML/CSS · JavaScript</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/lit-revu" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+            </div>
+
+        </div>
+    </dialog>
+
+
+    <!-- AlgoInvest & Trade -->
+    <dialog class="project-dialog" id="algoinvest" aria-labelledby="algoinvest-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">OpenClassrooms project</p>
+                <h3 id="algoinvest-title">AlgoInvest &amp; Trade — constrained optimisation</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                Finding the best combination of shares to buy with a €500 budget:
+                a variant of the knapsack problem, on 20 shares and then on two
+                datasets of 1,000 shares.
+            </p>
+
+            <div class="dialog-table-wrap">
+                <table class="dialog-table">
+                    <caption class="sr-only">Comparison of the two algorithms</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Brute force</th>
+                            <th scope="col">Greedy algorithm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Complexity</th>
+                            <td>O(2ⁿ)</td>
+                            <td>O(n log n)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">20 shares</th>
+                            <td>1,048,576 combinations tested, €99.08 profit (optimal)</td>
+                            <td>€97.48 profit, in a few milliseconds</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1,000 shares</th>
+                            <td>Impossible: 2¹⁰⁰⁰ combinations</td>
+                            <td>Close to €198 profit on each dataset</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>A brute-force search over all 2²⁰ combinations using bitmasks, giving the optimal reference solution.</li>
+                <li>A greedy algorithm that sorts shares by return, then buys them while the budget allows.</li>
+                <li>Data cleaning (zero or negative prices) and a report comparing my results with the analyst's.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Compare the greedy algorithm with an exact dynamic-programming solution to measure the gap to the optimum.</li>
+            </ul>
+
+            <p class="project-stack">Python · pandas · Algorithms · Complexity</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/algoinvest" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+            </div>
+
+        </div>
+    </dialog>
+
+
+    <!-- Chess Tournament -->
+    <dialog class="project-dialog" id="chess-tournament" aria-labelledby="chess-tournament-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">OpenClassrooms project</p>
+                <h3 id="chess-tournament-title">Chess Tournament — tournament manager</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                An offline application for a chess club: player registration,
+                round-by-round tournaments, rankings and reports.
+            </p>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>A console application organised in MVC: models (player, match, tournament), separate views and controllers.</li>
+                <li>Swiss-style pairing: players sorted by points, avoiding rematches.</li>
+                <li>Saving and loading tournaments as JSON, and reports: players in alphabetical order, tournaments, rounds and matches.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Add unit tests for the pairing algorithm.</li>
+                <li>Automate style checks (PEP 8) with Flake8.</li>
+            </ul>
+
+            <p class="project-stack">Python · OOP · MVC · JSON</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/chess-tournament-manager" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+            </div>
+
+        </div>
+    </dialog>
+
+
+    <!-- Contact API -->
+    <dialog class="project-dialog" id="contact-api" aria-labelledby="contact-api-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind project-kind-personal">Personal project · in production</p>
+                <h3 id="contact-api-title">Contact API — FastAPI in production</h3>
+                <button class="dialog-close" type="button" aria-label="Close">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                This site's contact form relies on an API I built and deployed:
+                it validates every message, then forwards it to me by email.
+            </p>
+
+            <ol class="dialog-flow" aria-label="How a message travels">
+                <li>Form<span>this site</span></li>
+                <li>FastAPI<span>api.tommouquet.com</span></li>
+                <li>Resend<span>sends the email</span></li>
+                <li>My inbox<span>with “reply-to”</span></li>
+            </ol>
+
+            <h4>What I built</h4>
+            <ul class="dialog-list">
+                <li>A <code>POST /contact</code> endpoint in FastAPI with Pydantic validation: valid email, minimum and maximum lengths, surrounding whitespace stripped.</li>
+                <li>Asynchronous email delivery through the Resend API, with the sender's address set as “reply-to”.</li>
+                <li>A static front end kept separate from the API, with a Docker image (Nginx) built and checked on every push.</li>
+            </ul>
+
+            <h4>Technical highlights</h4>
+            <ul class="dialog-list">
+                <li>Security: content escaped before going into the HTML email, line breaks stripped from the subject, CORS restricted to my domains and to POST.</li>
+                <li>Configuration through environment variables, failing fast at startup when a key is missing, plus a <code>/health</code> endpoint.</li>
+                <li>GitHub Actions pipeline: Pytest and Playwright tests, Docker image build, then deployment of the site to Render, only if everything passes.</li>
+            </ul>
+
+            <h4>Next steps</h4>
+            <ul class="dialog-list">
+                <li>Test the API itself with FastAPI's TestClient and a mocked email service.</li>
+                <li>Add spam protection: a honeypot field and rate limiting.</li>
+            </ul>
+
+            <p class="project-stack">Python · FastAPI · Pydantic · Resend · Docker · Nginx · GitHub Actions · Playwright · Render</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/portfolio" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
+                <a class="btn" href="#contact" data-close-dialog>Try the form</a>
+            </div>
+
+        </div>
+    </dialog>
+
 
 
     <!-- =========================================
