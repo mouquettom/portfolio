@@ -38,11 +38,16 @@
     --text-max: 892px;         /* texte About + atouts */
     --form-max: 892px;         /* formulaire */
 
-    /* Hauteur du header fixe (ancres + menu mobile) */
-    --header-height: 76px;
+    /* Hauteur du header fixe (ancres + menu mobile) :
+       la même sur ordinateur et sur mobile */
+    --header-height: 60px;
 
-    /* Espace autour des titres de section : 44px → 68px */
-    --title-space: clamp(44px, 3.6vw, 68px);
+    /* Hauteur du footer (une ligne) : sert à caler l'ancre Contact */
+    --footer-height: 60px;
+
+    /* Espace au-dessus ET au-dessous de chaque titre de section :
+       identique pour About, Projects, Journey et Contact (36px → 48px) */
+    --title-space: clamp(36px, 2.8vw, 48px);
 
 
     /* ==========================================
@@ -55,8 +60,10 @@
     /* Distance au bord de l'écran */
     --side-illustration-edge: clamp(10px, 2.1vw, 100px);
 
-    --astronaut-top: 323px;
-    --rocket-top: 450px;
+    /* Position verticale, liée à l'espace des titres :
+       l'illustration garde sa place par rapport au contenu */
+    --astronaut-top: calc(2 * var(--title-space) + 190px);
+    --rocket-top: calc(2 * var(--title-space) + 314px);
 
 
     /* ==========================================
@@ -66,6 +73,11 @@
     --timeline-dot: 48px;
     --timeline-end: 42px;
     --timeline-gap: clamp(14px, 3.4vw, 54px);
+
+    /* Ligne « organisme | date » */
+    --journey-name-size: 19px;
+    --journey-date-size: 13.6px;
+    --journey-separator-space: 15px;
 }
 
 
@@ -166,7 +178,7 @@ section {
 h1 {
     font-size: 3.2em;
 
-    letter-spacing: 2.5px;
+    letter-spacing: 3px;
 
     font-family:
         'Poppins',
@@ -200,7 +212,9 @@ h2 {
 
     text-align: center;
 
-    margin: var(--title-space) 0;
+    /* L'espace au-dessus vient du padding de la section :
+       il ne peut pas « fuir » hors de la section (ancre #contact) */
+    margin: 0 0 var(--title-space);
 
     font-weight: 600;
 
@@ -270,7 +284,7 @@ header {
 
     z-index: 100;
 
-    padding: 8px clamp(16px, 3vw, 40px);
+    padding: 6px clamp(16px, 3vw, 40px);
 
     background-color: var(--background-header);
 }
@@ -289,7 +303,7 @@ header :focus-visible {
 
     margin: 0 auto;
 
-    min-height: 60px;
+    min-height: 48px;
 
     /* 3 colonnes : le menu reste parfaitement centré,
        quelle que soit la largeur du logo et des icônes */
@@ -318,8 +332,8 @@ header :focus-visible {
 
 
 .logo-circle {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
 
     border-radius: 50%;
 
@@ -330,7 +344,8 @@ header :focus-visible {
 
 
 
-.logo-circle:focus-within {
+/* Anneau blanc uniquement au clavier (Tab), jamais après un clic */
+.logo-circle:has(a:focus-visible) {
     outline: 2px solid #ffffff;
 
     outline-offset: 3px;
@@ -366,7 +381,7 @@ header :focus-visible {
     display: flex;
 
     /* Espacement progressif entre les rubriques */
-    gap: clamp(12px, 3vw, 55px);
+    gap: clamp(10px, 2.4vw, 44px);
 }
 
 
@@ -376,7 +391,7 @@ header :focus-visible {
 
     text-decoration: none;
 
-    font-size: 1.10em;
+    font-size: 0.88rem;
 
     transition: opacity 0.25s ease;
 }
@@ -398,7 +413,7 @@ header :focus-visible {
 
     align-items: center;
 
-    gap: 22px;
+    gap: 18px;
 }
 
 
@@ -410,8 +425,8 @@ header :focus-visible {
 
 
 .social-icon {
-    width: 24px;
-    height: 24px;
+    width: 19px;
+    height: 19px;
 
     object-fit: contain;
 
@@ -533,9 +548,8 @@ header :focus-visible {
     min-height: 100vh;
     min-height: 100svh;
 
-    /* Padding symétrique : le centrage reste identique,
-       mais le texte ne passe jamais sous le header */
-    padding: var(--header-height) var(--gutter);
+    /* Le contenu est centré dans la partie visible, sous le header */
+    padding: var(--header-height) var(--gutter) 0;
 
     display: flex;
 
@@ -547,6 +561,9 @@ header :focus-visible {
     text-align: center;
 
     overflow: hidden;
+
+    /* Le titre se dimensionne sur la largeur utile de l'accueil (cqi) */
+    container-type: inline-size;
 }
 
 
@@ -573,6 +590,33 @@ header :focus-visible {
 
 
 
+/*
+    « I design. I code. I deliver. » reste toujours sur une ligne :
+    la taille suit la largeur de l'écran, jusqu'à 3.2rem (51.2px).
+    --hero-ratio = largeur de la phrase / taille de police (mesurée) :
+    la phrase française est plus longue, elle a son propre ratio.
+*/
+:root {
+    --hero-ratio: 15.3;
+}
+
+:root:lang(fr) {
+    --hero-ratio: 17.45;
+}
+
+.accueil h1 {
+    /* Navigateurs anciens : largeur de l'écran ; sinon largeur utile exacte */
+    font-size: min(3.2rem, calc((100vw - 2 * var(--gutter) - 20px) / var(--hero-ratio)));
+    font-size: min(3.2rem, calc(100cqi / var(--hero-ratio)));
+
+    /* En em : l'espacement suit la taille du texte */
+    letter-spacing: 0.1em;
+
+    white-space: nowrap;
+}
+
+
+
 .line-1,
 .line-2,
 .line-3 {
@@ -595,7 +639,7 @@ header :focus-visible {
 
 
 .line-2 {
-    padding-left: 25px;
+    padding-left: 0.49em;
 
     animation-delay: 0.3s;
 }
@@ -603,7 +647,7 @@ header :focus-visible {
 
 
 .line-3 {
-    padding-left: 25px;
+    padding-left: 0.49em;
 
     animation-delay: 0.6s;
 }
@@ -680,7 +724,7 @@ header :focus-visible {
 
     align-items: center;
 
-    padding: 0 var(--gutter) 41px;
+    padding: var(--title-space) var(--gutter) 41px;
 
     background-color: var(--background-section);
 }
@@ -714,7 +758,7 @@ header :focus-visible {
     width: 100%;
     max-width: var(--text-max);
 
-    margin-top: 44px;
+    margin-top: 36px;
 
     list-style: none;
 
@@ -802,7 +846,7 @@ header :focus-visible {
 
     width: min(100%, 850px);
 
-    margin: 72px auto 42px;
+    margin: 48px auto 42px;
 }
 
 
@@ -855,7 +899,7 @@ header :focus-visible {
 
     align-items: center;
 
-    padding: 0 var(--gutter) 85px;
+    padding: var(--title-space) var(--gutter) 85px;
 
     background-color: var(--background-main);
 }
@@ -865,7 +909,7 @@ header :focus-visible {
 /* Phrase d'introduction (Projects, Contact) :
    une seule ligne sur ordinateur, lignes équilibrées sur mobile */
 .section-intro {
-    margin: calc(var(--title-space) * -0.5) auto 40px;
+    margin: 0 auto 40px;
     padding: 0 8px;
 
     text-align: center;
@@ -877,6 +921,16 @@ header :focus-visible {
     color: var(--text-secondary);
 
     text-wrap: balance;
+}
+
+/* Dès 981px : toujours une seule ligne. La phrase la plus longue
+   (Contact, en anglais) mesure 61,8 fois la taille de sa police */
+@media screen and (min-width: 981px) {
+
+    .section-intro {
+        font-size: min(0.9375rem, calc((100vw - 2 * var(--gutter) - 16px) / 62.4));
+    }
+
 }
 
 
@@ -1120,15 +1174,9 @@ header :focus-visible {
 
     align-items: center;
 
-    padding: 0 var(--gutter) 68px;
+    padding: var(--title-space) var(--gutter) 68px;
 
     background-color: var(--background-section);
-}
-
-
-
-.titre-travail-exp {
-    margin-bottom: 34px;
 }
 
 
@@ -1148,7 +1196,9 @@ header :focus-visible {
 
     width: min(100%, var(--content-max));
 
-    margin-top: 40px;
+    /* Les textes ont un interligne au-dessus de leurs lettres, pas le
+       premier logo : +6px pour le même écart visible sous le titre */
+    margin-top: 6px;
 
     list-style: none;
 }
@@ -1289,7 +1339,7 @@ header :focus-visible {
     flex-wrap: wrap;
 
     /* Centre la première ligne du titre sur le logo */
-    padding-top: calc((var(--timeline-dot) - 1.2 * 19px) / 2);
+    padding-top: calc((var(--timeline-dot) - 1.2 * var(--journey-name-size)) / 2);
 
     font-family:
         'Montserrat',
@@ -1307,7 +1357,7 @@ header :focus-visible {
 /* Organisme */
 
 .journey-name {
-    font-size: 19px;
+    font-size: var(--journey-name-size);
 
     font-weight: 600;
 
@@ -1321,9 +1371,9 @@ header :focus-visible {
 /* Séparateur | */
 
 .journey-separator {
-    margin: 0 15px;
+    margin: 0 var(--journey-separator-space);
 
-    font-size: 15.5px;
+    font-size: calc(var(--journey-name-size) * 0.82);
 
     font-weight: 400;
 
@@ -1335,7 +1385,7 @@ header :focus-visible {
 /* Date */
 
 .journey-date {
-    font-size: 13.6px;
+    font-size: var(--journey-date-size);
 
     font-weight: 500;
 
@@ -1412,7 +1462,12 @@ header :focus-visible {
 .contact {
     width: 100%;
 
-    padding: 0 var(--gutter);
+    /* Assez haute pour que le lien « contact » amène le titre
+       au même endroit que les autres sections, même sur grand écran */
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    min-height: calc(100svh - var(--header-height) - var(--footer-height));
+
+    padding: var(--title-space) var(--gutter) 0;
 }
 
 
@@ -1979,11 +2034,13 @@ footer {
 
     text-align: center;
 
+    /* 24 + 16 + 20 = 60px = --footer-height */
     padding: 24px var(--gutter) 20px;
 
     opacity: 0.55;
 
     font-size: 13px;
+    line-height: 16px;
 }
 
 
@@ -2038,22 +2095,22 @@ footer {
     }
 
 
-    /* Astronaute juste sous ABOUT */
+    /* Astronaute sous ABOUT, fusée sous JOURNEY.
+       Le cercle commence à 12,5 % du haut de l'animation : on remonte
+       d'autant pour garder le même écart visible sous chaque titre */
+
+    #astronaut,
+    #rocket {
+        margin-top: calc(6px - var(--side-illustration-size) * 0.125);
+        margin-inline: auto;
+    }
 
     #astronaut {
-        margin: calc(var(--title-space) * -0.5) auto 30px;
+        margin-bottom: 30px;
     }
-
-
-    /* Fusée juste sous JOURNEY */
 
     #rocket {
-        margin: 0 auto clamp(20px, 3vw, 30px);
-    }
-
-
-    .timeline {
-        margin-top: 0;
+        margin-bottom: clamp(20px, 3vw, 30px);
     }
 
 }
@@ -2062,41 +2119,15 @@ footer {
 
 /* =========================================
    <= 1280px
-   Hero sur trois lignes
+   Description du hero sur plusieurs lignes
    ========================================= */
 
 @media screen and (max-width: 1280px) {
-
-    .accueil h1 {
-        width: 100%;
-
-        flex-direction: column;
-
-        margin-top: min(100px, 12vh);
-
-        font-size: clamp(2.4rem, 12vw, 3.6rem);
-
-        line-height: 1.75;
-    }
-
-    .line-1,
-    .line-2,
-    .line-3 {
-        width: 100%;
-
-        padding-left: 0;
-
-        transform: translateY(-75px);
-
-        text-align: center;
-    }
 
     .hero-description {
         width: min(680px, 100%);
 
         margin-inline: auto;
-
-        padding-top: 50px;
 
         line-height: 1.75;
 
@@ -2166,12 +2197,7 @@ footer {
 
 @media screen and (max-width: 900px) {
 
-    :root {
-        --header-height: 60px;
-    }
-
-
-    /* HEADER */
+    /* HEADER (même hauteur que sur ordinateur : 60px) */
 
     header {
         padding: 6px 16px;
@@ -2262,6 +2288,16 @@ footer {
         padding: 10px;
     }
 
+    /* Dans le menu déroulant : icônes et FR/EN à taille tactile */
+    .social-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .nav-right a.lang-switch {
+        font-size: 0.8rem;
+    }
+
 }
 
 
@@ -2297,6 +2333,28 @@ footer {
         --timeline-dot: 40px;
         --timeline-end: 36px;
         --timeline-gap: 14px;
+
+        /* 15px → 17px, 12px → 13px entre 360 et 430px de large :
+           « Cegedim / C-Media | 2022 - today » tient sur une ligne */
+        --journey-name-size: clamp(15px, 2.86vw + 4.7px, 17px);
+        --journey-date-size: clamp(12px, 1.43vw + 6.85px, 13px);
+        --journey-separator-space: clamp(8px, 2.86vw - 2.3px, 10px);
+    }
+
+
+    /* HOME : le titre tient sur une ligne, le texte suit en plus petit */
+
+    .hero-description {
+        padding-top: 18px;
+
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .hero-signature {
+        padding-top: 18px;
+
+        font-size: 0.85rem;
     }
 
 
@@ -2340,32 +2398,18 @@ footer {
     }
 
 
-    /* JOURNEY : nom et date l'un sous l'autre */
+    /* JOURNEY : « organisme | date » sur une ligne, comme sur ordinateur */
 
     .bloc {
         padding-bottom: 28px;
     }
 
     .titre-section-bloc {
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        row-gap: 2px;
-
-        padding-top: 0;
-    }
-
-    .journey-separator {
-        display: none;
-    }
-
-    .journey-name {
-        font-size: 17px;
+        flex-wrap: nowrap;
     }
 
     .journey-date {
-        font-size: 13px;
+        letter-spacing: 0.5px;
     }
 
     .journey-role {
@@ -2439,6 +2483,31 @@ footer {
 
 
 /* =========================================
+   < 360px
+   Très petits téléphones : la date passe sous le nom
+   ========================================= */
+
+@media screen and (max-width: 359px) {
+
+    .titre-section-bloc {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        row-gap: 2px;
+
+        padding-top: 0;
+    }
+
+    .journey-separator {
+        display: none;
+    }
+
+}
+
+
+
+/* =========================================
    ACCESSIBILITÉ : MOUVEMENT RÉDUIT
    ========================================= */
 
@@ -2482,14 +2551,14 @@ footer {
    ========================================= */
 
 .lang-switch {
-    padding: 3px 8px;
+    padding: 2px 6px;
 
     border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
+    border-radius: 6px;
 
     color: #ffffff;
 
-    font-size: 0.8rem;
+    font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 1px;
     text-decoration: none;
