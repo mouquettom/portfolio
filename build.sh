@@ -5,14 +5,18 @@ set -eu
 rm -rf public
 mkdir -p public
 
+# Version anglaise
 cp index.html public/
+
+# Fichiers partagés
 cp style.css public/
 cp script.js public/
-cp robots.txt sitemap.xml public/
 
-# Version française
-cp -R fr public/
+# SEO anglais
+cp robots.txt public/robots.txt
+cp sitemap.xml public/sitemap.xml
 
+# Ressources
 cp -R ressources public/
 
-echo "Static site prepared in ./public"
+echo "English static site prepared in ./public"

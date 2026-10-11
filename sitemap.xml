@@ -5,12 +5,23 @@
 >
     <url>
         <loc>https://tommouquet.com/</loc>
-        <xhtml:link rel="alternate" hreflang="en" href="https://tommouquet.com/"/>
-        <xhtml:link rel="alternate" hreflang="fr" href="https://tommouquet.com/fr/"/>
-    </url>
-    <url>
-        <loc>https://tommouquet.com/fr/</loc>
-        <xhtml:link rel="alternate" hreflang="en" href="https://tommouquet.com/"/>
-        <xhtml:link rel="alternate" hreflang="fr" href="https://tommouquet.com/fr/"/>
+
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://tommouquet.com/"
+        />
+
+        <xhtml:link
+            rel="alternate"
+            hreflang="fr"
+            href="https://tommouquet.fr/"
+        />
+
+        <xhtml:link
+            rel="alternate"
+            hreflang="x-default"
+            href="https://tommouquet.com/"
+        />
     </url>
 </urlset>
