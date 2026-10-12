@@ -79,6 +79,22 @@
 
 
 /* =========================================
+   POLICE DU SLOGAN : GRIFT BOLD
+   Sous-ensemble latin (≈ 19 Ko). block : le slogan apparaît
+   directement dans sa police, sans clignotement.
+   ========================================= */
+
+@font-face {
+    font-family: "Grift";
+    src: url("ressources/fonts/grift-bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
+
+
+
+/* =========================================
    RESET
    ========================================= */
 
@@ -174,7 +190,7 @@ section {
 h1 {
     font-size: 3.2em;
 
-    letter-spacing: 2.5px;
+    letter-spacing: 3px;
 
     font-family:
         'Poppins',
@@ -299,7 +315,7 @@ header :focus-visible {
 
     margin: 0 auto;
 
-    min-height: 58px;
+    min-height: 54px;
 
     /* 3 colonnes : le menu reste parfaitement centré,
        quelle que soit la largeur du logo et des icônes */
@@ -387,7 +403,7 @@ header :focus-visible {
 
     text-decoration: none;
 
-    font-size: 1.1rem;
+    font-size: 0.99rem;
 
     transition: opacity 0.25s ease;
 }
@@ -418,17 +434,11 @@ header :focus-visible {
     display: block;
 }
 
-.nav-right a.lang-switch {
-    margin-right: 20px;
-    padding: 3px 10px;
-    font-size: 0.85rem;
-}
-
 
 
 .social-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 
     object-fit: contain;
 
@@ -563,9 +573,6 @@ header :focus-visible {
     text-align: center;
 
     overflow: hidden;
-
-    /* Le titre se dimensionne sur la largeur utile de l'accueil (cqi) */
-    container-type: inline-size;
 }
 
 
@@ -583,7 +590,6 @@ header :focus-visible {
 
 
 
-
 .accueil h1,
 .accueil p {
     position: relative;
@@ -591,26 +597,25 @@ header :focus-visible {
     z-index: 2;
 }
 
+
+
 /*
-    « I design. I code. I deliver. » reste toujours sur une ligne :
-    la taille suit la largeur de l'écran, jusqu'à 2.75rem (44px).
-    --hero-ratio = largeur de la phrase / taille de police (mesurée).
-    Le slogan est le même en anglais et en français.
+    « I design. I code. I deliver. » (maquette Illustrator) :
+    Grift Bold, 80 pt, approche 5 → 80px sur un écran de 1920px,
+    proportionnel en dessous. Une seule ligne, centrée.
 */
-:root {
-    --hero-ratio: 14.3;
-}
-
 .accueil h1 {
-    /* Navigateurs anciens : largeur de l'écran ; sinon largeur utile exacte */
-    font-size: min(3.2rem, calc((100vw - 2 * var(--gutter) - 20px) / var(--hero-ratio)));
-    font-size: min(3.2rem, calc(100cqi / var(--hero-ratio)));
+    font-family: "Grift", "Poppins", "Helvetica Neue", sans-serif;
+    font-weight: 700;
 
-    /* ≈ 3px à pleine taille ; en em, l'espacement suit la taille du texte */
-    letter-spacing: 0.06em;
+    font-size: clamp(60px, calc(45px + 1.2vw), 78px);
+    line-height: 1.2;
+
+    letter-spacing: 0.005em;
 
     white-space: nowrap;
 }
+
 
 
 .line-1,
@@ -635,7 +640,7 @@ header :focus-visible {
 
 
 .line-2 {
-    padding-left: 0.49em;
+    padding-left: 0.255em;
 
     animation-delay: 0.3s;
 }
@@ -643,7 +648,7 @@ header :focus-visible {
 
 
 .line-3 {
-    padding-left: 0.49em;
+    padding-left: 0.255em;
 
     animation-delay: 0.6s;
 }
@@ -651,16 +656,15 @@ header :focus-visible {
 
 
 .hero-description {
-    padding-top: 19px;
+    font-size: clamp(15px, calc(10.32px + 0.275vw), 17px);
+    line-height: 1.5;
 
-    font-size: 0.97rem;
+    padding-top: 10px;
 
-    letter-spacing: 0.25px;
-
-    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+    color: var(--text-main);
 
     opacity: 0;
-
     transform: translateY(-30px);
 
     animation:
@@ -671,11 +675,12 @@ header :focus-visible {
 
 /* « Tom Mouquet · Python back-end developer » */
 .hero-signature {
-    padding-top: 19px;
+    font-size: clamp(12.25px, calc(9.33px + 0.249vw), 14.1px);
+    font-weight: 500;
 
-    font-size: 0.84rem;
+    padding-top: 21px;
 
-    letter-spacing: 0.3px;
+    letter-spacing: 0.05em;
 
     color: var(--text-muted);
 
@@ -2121,20 +2126,13 @@ footer {
    Description du hero sur plusieurs lignes
    ========================================= */
 
-@media screen and (max-width: 1280px) {
+@media screen and (min-width: 1280px) {
 
     .hero-description {
-        width: min(680px, 100%);
-
+        width: min(1100px, calc(100vw - 80px));
         margin-inline: auto;
-
-        line-height: 1.75;
-
-        font-size: 1.1rem;
     }
-
 }
-
 
 
 /* =========================================
@@ -2185,7 +2183,6 @@ footer {
     }
 
 }
-
 
 
 /* =========================================
@@ -2243,8 +2240,6 @@ footer {
 
         background-color: var(--background-header);
 
-        box-shadow: 0 16px 24px rgba(0, 0, 0, 0.15);
-
         /* Fermé : invisible et hors du parcours clavier */
         opacity: 0;
         visibility: hidden;
@@ -2274,13 +2269,15 @@ footer {
         gap: 0;
     }
 
-    /* Zones tactiles d'au moins 44px */
+    /* Zones tactiles d'au moins 44px. Interligne fixe : le panneau mesure
+       toujours 268px (4 + 4 × 46 + 12 + 44 + 24), quel que soit le navigateur */
     .nav-menu a {
         display: block;
 
         padding: 12px 32px;
 
         font-size: 1.15rem;
+        line-height: 22px;
     }
 
     .nav-right {
@@ -2299,6 +2296,107 @@ footer {
 
     .nav-right a.lang-switch {
         font-size: 0.8rem;
+    }
+
+}
+
+
+
+/* =========================================
+   <= 900px — HOME (maquette iPhone)
+   Slogan sur trois lignes ; le bloc est centré, les textes alignés
+   à gauche. Le bas du menu déroulant ouvert tombe exactement entre
+   la 1re et la 2e ligne du slogan : il ne coupe jamais un mot.
+   ========================================= */
+
+@media screen and (max-width: 900px) {
+
+    :root {
+        /* Bas du menu ouvert : header 60px + panneau 268px */
+        --menu-bottom: calc(var(--header-height) + 268px);
+
+        /* Hauteur d'une ligne du slogan (62.5px × 1.2) */
+        --slogan-line: 75px;
+    }
+
+    .accueil {
+        /* Une colonne aussi large que la plus longue ligne du slogan :
+           la description et la signature s'alignent dessus */
+        display: grid;
+        grid-template-columns: min-content;
+        justify-content: center;
+        align-content: start;
+
+        /* La 2e ligne commence pile au bas du menu ouvert */
+        padding: calc(var(--menu-bottom) - var(--slogan-line)) var(--gutter) 48px;
+
+        text-align: left;
+    }
+
+    .accueil h1 {
+        flex-direction: column;
+        align-items: flex-start;
+
+        font-size: 62.5px;
+        line-height: var(--slogan-line);
+    }
+
+    .line-2,
+    .line-3 {
+        padding-left: 0;
+    }
+
+    .hero-description {
+        width: auto;
+
+        margin: 0;
+        padding-top: 31px;
+
+        font-size: 12.6px;
+        line-height: 1.53;
+        letter-spacing: 0.035em;
+    }
+
+    .hero-signature {
+        padding-top: 43px;
+
+        font-size: 9px;
+        letter-spacing: 0.07em;
+    }
+
+}
+
+
+
+/* Écran peu haut (iPhone SE, paysage) : le slogan remonte d'une ligne,
+   le bas du menu tombe alors entre la 2e et la 3e ligne */
+@media screen and (max-width: 900px) and (max-height: 640px) {
+
+    .accueil {
+        padding-top: calc(var(--menu-bottom) - 2 * var(--slogan-line));
+    }
+
+    .hero-description {
+        padding-top: 20px;
+    }
+
+    .hero-signature {
+        padding-top: 28px;
+    }
+
+}
+
+
+
+/* Tablette en portrait : assez de hauteur pour centrer le bloc
+   sous le menu ouvert, sans qu'il recouvre le slogan */
+@media screen and (max-width: 900px) and (min-height: 1000px) {
+
+    .accueil {
+        align-content: center;
+
+        padding-top: var(--header-height);
+        padding-bottom: 0;
     }
 
 }
@@ -2342,21 +2440,6 @@ footer {
         --journey-name-size: clamp(15px, 2.86vw + 4.7px, 17px);
         --journey-date-size: clamp(12px, 1.43vw + 6.85px, 13px);
         --journey-separator-space: clamp(8px, 2.86vw - 2.3px, 10px);
-    }
-
-
-    /* HOME : le titre tient sur une ligne, le texte suit en plus petit */
-
-    .hero-description {
-        padding-top: 18px;
-
-        font-size: 0.9rem;
-        line-height: 1.7;
-    }
-
-    .hero-signature {
-        padding-top: 18px;
-        font-size: 0.9rem;
     }
 
 
@@ -2553,7 +2636,7 @@ footer {
    ========================================= */
 
 .lang-switch {
-    padding: 3px 10px;
+    padding: 3px 7px;
 
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 7px;
