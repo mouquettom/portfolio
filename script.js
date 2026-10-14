@@ -476,11 +476,68 @@ inputFields.forEach((field) => {
     });
 });
 
-const CONTACT_API_URL =
+const CONTACT_API_BASE_URL =
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
-        ? "http://localhost:8001/contact"
-        : "https://api.tommouquet.com/contact";
+        ? "http://localhost:8001"
+        : "https://api.tommouquet.com";
+
+const CONTACT_API_URL = `${CONTACT_API_BASE_URL}/contact`;
+const CONTACT_API_HEALTH_URL = `${CONTACT_API_BASE_URL}/health`;
+
+
+/* =========================================
+   CONTACT API — PRE-WARM
+   ========================================= */
+
+// Date du dernier réveil réussi de l'API.
+let lastApiWakeUp = 0;
+
+// Évite plusieurs appels /health simultanés.
+let apiWakeUpPromise = null;
+
+async function wakeContactApi() {
+    const now = Date.now();
+
+    // Pas besoin de réveiller de nouveau l'API si elle a été
+    // contactée avec succès il y a moins de 5 minutes.
+    if (now - lastApiWakeUp < 5 * 60 * 1000) {
+        return;
+    }
+
+    // Si un réveil est déjà en cours, on attend le même appel
+    // au lieu d'en lancer un deuxième.
+    if (apiWakeUpPromise) {
+        return apiWakeUpPromise;
+    }
+
+    apiWakeUpPromise = fetch(CONTACT_API_HEALTH_URL, {
+        method: "GET",
+        cache: "no-store"
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Unable to wake contact API");
+            }
+
+            lastApiWakeUp = Date.now();
+        })
+        .catch((error) => {
+            // Le pré-réveil est une optimisation : son échec ne doit
+            // jamais empêcher le visiteur d'utiliser le formulaire.
+            console.debug("Contact API warm-up failed:", error);
+        })
+        .finally(() => {
+            apiWakeUpPromise = null;
+        });
+
+    return apiWakeUpPromise;
+}
+
+// Premier réveil automatique deux secondes après l'ouverture du portfolio.
+setTimeout(() => {
+    void wakeContactApi();
+}, 2000);
 
 
 /* =========================================
@@ -492,6 +549,17 @@ const contactStatus = document.querySelector("#contact-status");
 const contactSubmit = document.querySelector("#contact-submit");
 
 if (contactForm && contactStatus && contactSubmit) {
+
+    // Cas particulier : si le visiteur reste longtemps sur le portfolio
+    // avant d'utiliser le formulaire, son activité peut réveiller l'API
+    // de nouveau. La limite de 5 minutes évite les requêtes répétées.
+    contactForm.addEventListener("focusin", () => {
+        void wakeContactApi();
+    });
+
+    contactForm.addEventListener("input", () => {
+        void wakeContactApi();
+    });
 
     contactForm.addEventListener("submit", async (event) => {
 
@@ -510,6 +578,9 @@ if (contactForm && contactStatus && contactSubmit) {
         contactStatus.textContent = "";
 
         try {
+            // Dernière vérification avant l'envoi. Si l'API a été réveillée
+            // récemment, cette fonction retourne immédiatement.
+            await wakeContactApi();
 
             const response = await fetch(CONTACT_API_URL, {
                 method: "POST",
@@ -535,7 +606,6 @@ if (contactForm && contactStatus && contactSubmit) {
         } catch (error) {
 
             console.error(error);
-
             contactStatus.textContent = MESSAGES.error;
 
         } finally {
