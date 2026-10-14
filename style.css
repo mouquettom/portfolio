@@ -2059,18 +2059,12 @@ footer {
     }
 
     /*
-        Texte justifié sans gros espaces entre les mots : la bonne largeur
-        dépend des mots, donc de la langue (mesurée sur les quatre paragraphes).
-        Anglais : 666px. Français : la largeur d'origine convient déjà.
+        Même largeur pour les descriptions
+        Journey en anglais et en français.
     */
     .txt-section {
-        width: min(100%, 666px);
-    }
-
-    .txt-section:lang(fr) {
         width: min(95%, 750px);
     }
-
 }
 
 
@@ -2129,7 +2123,7 @@ footer {
 @media screen and (min-width: 1280px) {
 
     .hero-description {
-        width: min(1100px, calc(100vw - 80px));
+        width: min(1250px, calc(100vw - 80px));
         margin-inline: auto;
     }
 }
@@ -2664,4 +2658,103 @@ footer {
         margin-right: 6px;
     }
 
+}
+
+
+/* =========================================
+   NAVIGATION — TRÈS GRANDS ÉCRANS
+   1920px = taille actuelle
+   2400px = +10%
+   ========================================= */
+
+@media screen and (min-width: 1920px) {
+
+    :root {
+        /* 68px → 74.8px */
+        --header-height:
+            clamp(68px, calc(40.8px + 1.4167vw), 74.8px);
+    }
+
+
+    header {
+        /* vertical : 7px → 7.7px
+           horizontal : 40px → 44px */
+        padding:
+            clamp(7px, calc(4.2px + 0.1458vw), 7.7px)
+            clamp(40px, calc(24px + 0.8333vw), 44px);
+    }
+
+
+    .nav-bar {
+        /* 54px → 59.4px */
+        min-height:
+            clamp(54px, calc(32.4px + 1.125vw), 59.4px);
+
+        /* 32px → 35.2px */
+        column-gap:
+            clamp(32px, calc(19.2px + 0.6667vw), 35.2px);
+    }
+
+
+    .logo-circle {
+        /* 54px → 59.4px */
+        width:
+            clamp(54px, calc(32.4px + 1.125vw), 59.4px);
+
+        height:
+            clamp(54px, calc(32.4px + 1.125vw), 59.4px);
+    }
+
+
+    .nav-menu {
+        /* 50px → 55px */
+        gap:
+            clamp(50px, calc(30px + 1.0417vw), 55px);
+    }
+
+
+    .nav-menu a {
+        /* 0.99rem → 1.089rem */
+        font-size:
+            clamp(
+                0.99rem,
+                calc(0.594rem + 0.33vw),
+                1.089rem
+            );
+    }
+
+
+    .nav-right {
+        /* 20px → 22px */
+        gap:
+            clamp(20px, calc(12px + 0.4167vw), 22px);
+    }
+
+
+    .social-icon {
+        /* 20px → 22px */
+        width:
+            clamp(20px, calc(12px + 0.4167vw), 22px);
+
+        height:
+            clamp(20px, calc(12px + 0.4167vw), 22px);
+    }
+
+
+    .lang-switch {
+        /* 0.72rem → 0.792rem */
+        font-size:
+            clamp(
+                0.72rem,
+                calc(0.432rem + 0.24vw),
+                0.792rem
+            );
+
+        padding:
+            clamp(3px, calc(1.8px + 0.0625vw), 3.3px)
+            clamp(7px, calc(4.2px + 0.1458vw), 7.7px);
+
+        border-radius:
+            clamp(7px, calc(4.2px + 0.1458vw), 7.7px);
+    }
 }
