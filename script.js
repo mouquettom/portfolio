@@ -107,7 +107,7 @@ function setupReveal() {
             .map((element) => ({ element, rect: element.getBoundingClientRect() }))
             .sort((a, b) => a.rect.top - b.rect.top || a.rect.left - b.rect.left)
             .forEach(({ element }, index) => {
-                element.style.setProperty("--reveal-delay", `${Math.min(index, 5) * 90}ms`);
+                element.style.setProperty("--reveal-delay", `${Math.min(index, 5) * 110}ms`);
                 element.dataset.reveal = "in";
                 revealObserver.unobserve(element);
             });
@@ -547,6 +547,28 @@ loadSkillsAnimation(
     "skills-02",
     assetUrl("ressources/animations/skills-02.json")
 );
+
+
+// -------------------------
+// CV : OUVERTURE ET TÉLÉCHARGEMENT
+// -------------------------
+
+// Le lien ouvre toujours le PDF dans un nouvel onglet (target="_blank") ;
+// au même clic, une copie du fichier est téléchargée sous le nom
+// indiqué par data-download. Sans JavaScript, le lien ouvre le PDF.
+document.querySelectorAll("a[data-download]").forEach((link) => {
+    link.addEventListener("click", () => {
+        const file = document.createElement("a");
+
+        file.href = link.href;
+        file.download = link.dataset.download;
+        file.hidden = true;
+
+        document.body.append(file);
+        file.click();
+        file.remove();
+    });
+});
 
 
 // -------------------------
