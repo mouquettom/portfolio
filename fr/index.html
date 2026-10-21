@@ -20,7 +20,7 @@
     <link rel="alternate" hreflang="x-default" href="https://tommouquet.com/">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/style.css?v=7">
+    <link rel="stylesheet" href="/style.css?v=8">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap"
@@ -34,7 +34,7 @@
     ></script>
 
     <!-- JavaScript -->
-    <script src="/script.js?v=5" defer></script>
+    <script src="/script.js?v=6" defer></script>
 </head>
 
 
@@ -359,21 +359,21 @@
                     </div>
                 </article>
 
-                <!-- LIT-Revu -->
+                <!-- Orange County Lettings -->
                 <article class="item">
                     <div class="container-image-porftolio">
-                        <img src="/ressources/socialmedia.jpg" alt="">
+                        <img src="/ressources/lettings.jpg" alt="">
                     </div>
                     <div class="item-body">
                         <p class="project-kind">Projet OpenClassrooms</p>
                         <h3>
-                            <button class="project-open" type="button" data-project="lit-revu" aria-haspopup="dialog">LIT-Revu</button>
+                            <button class="project-open" type="button" data-project="orange-county-lettings" aria-haspopup="dialog">Orange County Lettings</button>
                         </h3>
-                        <p>Application web Django : critiques de livres, abonnements et flux personnalisé.</p>
-                        <p class="project-stack">Python · Django · SQLite · HTML/CSS · JavaScript</p>
+                        <p>Site de locations Django refactorisé et préparé pour la production : tests, monitoring et CI/CD.</p>
+                        <p class="project-stack">Python · Django · Pytest · Docker · Sentry · GitHub Actions</p>
                         <p class="project-footer">
                             <span class="project-more" aria-hidden="true">Voir le détail</span>
-                            <a class="project-code" href="https://github.com/mouquettom/lit-revu" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> de LIT-Revu sur GitHub</span></a>
+                            <a class="project-code" href="https://github.com/mouquettom/orange-county-lettings" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> d'Orange County Lettings sur GitHub</span></a>
                         </p>
                     </div>
                 </article>
@@ -397,21 +397,21 @@
                     </div>
                 </article>
 
-                <!-- Chess Tournament -->
+                <!-- LIT-Revu -->
                 <article class="item">
                     <div class="container-image-porftolio">
-                        <img src="/ressources/chess.jpg" alt="">
+                        <img src="/ressources/socialmedia.jpg" alt="">
                     </div>
                     <div class="item-body">
                         <p class="project-kind">Projet OpenClassrooms</p>
                         <h3>
-                            <button class="project-open" type="button" data-project="chess-tournament" aria-haspopup="dialog">Chess Tournament</button>
+                            <button class="project-open" type="button" data-project="lit-revu" aria-haspopup="dialog">LIT-Revu</button>
                         </h3>
-                        <p>Gestionnaire de tournois d'échecs hors ligne, en architecture MVC avec sauvegarde JSON.</p>
-                        <p class="project-stack">Python · POO · MVC · JSON</p>
+                        <p>Application web Django : critiques de livres, abonnements et flux personnalisé.</p>
+                        <p class="project-stack">Python · Django · SQLite · HTML/CSS · JavaScript</p>
                         <p class="project-footer">
                             <span class="project-more" aria-hidden="true">Voir le détail</span>
-                            <a class="project-code" href="https://github.com/mouquettom/chess-tournament-manager" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> de Chess Tournament sur GitHub</span></a>
+                            <a class="project-code" href="https://github.com/mouquettom/lit-revu" target="_blank" rel="noopener noreferrer">Code<span class="sr-only"> de LIT-Revu sur GitHub</span></a>
                         </p>
                     </div>
                 </article>
@@ -490,7 +490,9 @@
                         <p class="txt-section">
                             Création de contenus publicitaires 2D/3D pour des marques
                             pharmaceutiques et cosmétiques, de la conception et du
-                            storyboard jusqu'à la livraison finale.
+                            storyboard jusqu'à la livraison finale. Digitalisation des campagnes :
+                            <strong>de 20&nbsp;% à 50&nbsp;%</strong>
+                            en cinq ans, porté par une demande en hausse.
                         </p>
                     </div>
                 </li>
@@ -802,6 +804,63 @@ POST  /api/projects/{id}/issues/{id}/comments/</code></pre>
         </div>
     </dialog>
 
+
+    <!-- Orange County Lettings -->
+    <dialog class="project-dialog" id="orange-county-lettings" aria-labelledby="orange-county-lettings-title">
+        <div class="dialog-inner">
+
+            <div class="dialog-header">
+                <p class="project-kind">Projet OpenClassrooms · en production</p>
+                <h3 id="orange-county-lettings-title">Orange County Lettings — une application Django prête pour la production</h3>
+                <button class="dialog-close" type="button" aria-label="Fermer">×</button>
+            </div>
+
+            <p class="dialog-lead">
+                Un site de locations immobilières livré sous la forme d'un seul projet
+                Django : je l'ai refactorisé, couvert de tests, doté d'un monitoring,
+                conteneurisé avec Docker et déployé par un pipeline automatisé.
+            </p>
+
+            <ol class="dialog-flow" aria-label="D'un push à la production">
+                <li>Push<span>GitHub</span></li>
+                <li>Flake8 + Pytest<span>couverture ≥ 80 %</span></li>
+                <li>Docker Hub<span>image taguée par commit</span></li>
+                <li>Render<span>déploiement automatique</span></li>
+            </ol>
+
+            <h4>Ce que j'ai construit</h4>
+            <ul class="dialog-list">
+                <li>Le découpage du projet monolithique en trois applications Django (<code>lettings</code>, <code>profiles</code> et le site principal), avec des pages d'erreur 404 et 500 personnalisées.</li>
+                <li>Des tests automatisés avec Pytest sur les modèles, les URL, les vues, les templates et les logs : 96 % de couverture, et un pipeline qui échoue sous 80 %. Vérification Flake8 à chaque push.</li>
+                <li>La journalisation Python et la remontée d'erreurs vers Sentry, configurées par variables d'environnement.</li>
+                <li>Une image Docker servie par Gunicorn, avec les fichiers statiques servis par WhiteNoise.</li>
+            </ul>
+
+            <h4>Points techniques</h4>
+            <ul class="dialog-list">
+                <li>Pipeline GitHub Actions : lint et tests à chaque push et pull request ; sur <code>master</code>, l'image est publiée sur Docker Hub, taguée <code>latest</code> et avec le SHA du commit, puis déployée sur Render via un deploy hook.</li>
+                <li>Rien n'est publié ni déployé si le lint, les tests ou le seuil de couverture échouent.</li>
+                <li>Aucun secret dans le dépôt : secrets GitHub Actions et variables d'environnement Render, <code>DEBUG</code> désactivé en production.</li>
+                <li>Une documentation technique sur Read the Docs : installation, architecture, modèles de données, déploiement et CI/CD.</li>
+            </ul>
+
+            <h4>Pour aller plus loin</h4>
+            <ul class="dialog-list">
+                <li>Passer à des versions maintenues de Django et de Python (le projet est parti de Django 3.0 et Python 3.9).</li>
+                <li>Remplacer SQLite par PostgreSQL en production.</li>
+            </ul>
+
+            <p class="project-stack">Python · Django · Pytest · Flake8 · Sentry · Docker · Docker Hub · GitHub Actions · Gunicorn · WhiteNoise · Render · Read the Docs</p>
+
+            <div class="dialog-actions">
+                <a class="btn btn-primary" href="https://github.com/mouquettom/orange-county-lettings" target="_blank" rel="noopener noreferrer">Voir le code sur GitHub</a>
+                <a class="btn" href="https://orange-county-lettings-a4ee.onrender.com/" target="_blank" rel="noopener noreferrer">Voir le site en ligne</a>
+                <a class="btn" href="https://orange-county-lettings-read-the-docs.readthedocs.io/fr/latest/" target="_blank" rel="noopener noreferrer">Documentation</a>
+            </div>
+
+        </div>
+    </dialog>
+
     <!-- LIT-Revu -->
     <dialog class="project-dialog" id="lit-revu" aria-labelledby="lit-revu-title">
         <div class="dialog-inner">
@@ -908,43 +967,6 @@ POST  /api/projects/{id}/issues/{id}/comments/</code></pre>
 
             <div class="dialog-actions">
                 <a class="btn btn-primary" href="https://github.com/mouquettom/algoinvest" target="_blank" rel="noopener noreferrer">Voir le code sur GitHub</a>
-            </div>
-
-        </div>
-    </dialog>
-
-    <!-- Chess Tournament -->
-    <dialog class="project-dialog" id="chess-tournament" aria-labelledby="chess-tournament-title">
-        <div class="dialog-inner">
-
-            <div class="dialog-header">
-                <p class="project-kind">Projet OpenClassrooms</p>
-                <h3 id="chess-tournament-title">Chess Tournament — gestionnaire de tournois</h3>
-                <button class="dialog-close" type="button" aria-label="Fermer">×</button>
-            </div>
-
-            <p class="dialog-lead">
-                Une application hors ligne pour un club d'échecs : inscription des
-                joueurs, déroulé des tournois tour par tour, classement et rapports.
-            </p>
-
-            <h4>Ce que j'ai construit</h4>
-            <ul class="dialog-list">
-                <li>Une application console organisée en MVC : modèles (joueur, match, tournoi), vues et contrôleurs séparés.</li>
-                <li>Un appariement inspiré du système suisse : joueurs triés par points, en évitant qu'ils se rencontrent deux fois.</li>
-                <li>La sauvegarde et le chargement des tournois en JSON, et des rapports : joueurs par ordre alphabétique, tournois, tours et matchs.</li>
-            </ul>
-
-            <h4>Pour aller plus loin</h4>
-            <ul class="dialog-list">
-                <li>Ajouter des tests unitaires sur l'algorithme d'appariement.</li>
-                <li>Automatiser la vérification du style (PEP 8) avec Flake8.</li>
-            </ul>
-
-            <p class="project-stack">Python · POO · MVC · JSON</p>
-
-            <div class="dialog-actions">
-                <a class="btn btn-primary" href="https://github.com/mouquettom/chess-tournament-manager" target="_blank" rel="noopener noreferrer">Voir le code sur GitHub</a>
             </div>
 
         </div>

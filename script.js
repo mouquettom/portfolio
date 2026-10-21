@@ -61,6 +61,94 @@ const reduceMotion = window.matchMedia(
 
 
 // -------------------------
+// APPARITIONS AU DÉFILEMENT
+// -------------------------
+
+// Fondu et léger mouvement vers le haut quand un bloc arrive à l'écran.
+// L'état est porté par l'attribut data-reveal (les classes ne changent pas) :
+// "hidden" (en attente), "shown" (déjà visible au chargement), "in" (apparaît).
+// Rien n'est masqué sans JavaScript ni avec « Réduire les animations ».
+const REVEAL_TARGETS = [
+    "main section:not(.accueil) h2",
+    "main section:not(.accueil) .section-intro",
+    ".txt-about > p",
+    ".strengths > li",
+    ".skills-animations",
+    "#astronaut",
+    "#rocket",
+    ".container-portfolio > .item",
+    ".timeline > li",
+    ".contact-buttons",
+    "#contact-form > .form-groupe",
+    "footer p",
+].join(", ");
+
+function setupReveal() {
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+
+    const targets = [...document.querySelectorAll(REVEAL_TARGETS)];
+    if (!targets.length) return;
+
+    // Déjà à l'écran au chargement (lien direct vers une section) :
+    // affiché tel quel, sans clignotement.
+    targets.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const onScreen = rect.top < window.innerHeight && rect.bottom > 0;
+
+        element.dataset.reveal = onScreen ? "shown" : "hidden";
+    });
+
+    document.documentElement.classList.add("js-reveal");
+
+    function reveal(elements) {
+        // Les blocs qui arrivent ensemble apparaissent l'un après l'autre,
+        // de haut en bas puis de gauche à droite.
+        elements
+            .map((element) => ({ element, rect: element.getBoundingClientRect() }))
+            .sort((a, b) => a.rect.top - b.rect.top || a.rect.left - b.rect.left)
+            .forEach(({ element }, index) => {
+                element.style.setProperty("--reveal-delay", `${Math.min(index, 5) * 90}ms`);
+                element.dataset.reveal = "in";
+                revealObserver.unobserve(element);
+            });
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        reveal(
+            entries
+                .filter((entry) => entry.isIntersecting)
+                .map((entry) => entry.target)
+        );
+    }, { rootMargin: "0px 0px -6% 0px" });
+
+    const pending = () => targets.filter((element) => element.dataset.reveal === "hidden");
+
+    pending().forEach((element) => revealObserver.observe(element));
+
+    // Filet de sécurité : en bas de page, tout ce qui reste à l'écran apparaît
+    // (le pied de page peut ne jamais franchir la marge de déclenchement).
+    window.addEventListener("scroll", function revealAtBottom() {
+        const atBottom =
+            window.innerHeight + window.scrollY >=
+            document.documentElement.scrollHeight - 2;
+
+        if (!atBottom) return;
+
+        reveal(pending().filter((element) => {
+            const rect = element.getBoundingClientRect();
+            return rect.top < window.innerHeight && rect.bottom > 0;
+        }));
+
+        if (!pending().length) {
+            window.removeEventListener("scroll", revealAtBottom);
+        }
+    }, { passive: true });
+}
+
+setupReveal();
+
+
+// -------------------------
 // MENU MOBILE
 // -------------------------
 

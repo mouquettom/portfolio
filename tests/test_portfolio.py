@@ -41,9 +41,9 @@ LANGUAGE_SWITCH = {
 PROJECT_IDS = [
     "epic-events",
     "softdesk-api",
-    "lit-revu",
+    "orange-county-lettings",
     "algoinvest",
-    "chess-tournament",
+    "lit-revu",
     "contact-api",
 ]
 
