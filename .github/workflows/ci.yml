@@ -18,7 +18,7 @@ jobs:
 
   tests:
     name: Pytest + Playwright
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
@@ -66,7 +66,7 @@ jobs:
 
   docker:
     name: Docker build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: tests
     timeout-minutes: 10
 
@@ -81,7 +81,7 @@ jobs:
 
   deploy:
     name: Deploy to Render
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: docker
 
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
